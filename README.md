@@ -6,7 +6,6 @@ Jak odpalić projekt
     * sudo apt-get install python3.4
 2. (opcjonalny) ściagamy virtualenv i virtualenvwrapper:
     * pip install virtualenv
-    
     * pip install virtualenvwrapper
     * export WORKON_HOME=~/Envs
     * mkdir -p $WORKON_HOME
@@ -43,16 +42,17 @@ Praca nad projektem
 -------------------
 Bedąc w glownym folderze projektu
 1. pullujemy z gita nowości:
-* git pull
+    * git pull
 2. uruchamiamy testy jw - jak cos nie dziala to sprawdzamy kto ostatnio commitowac i kazemy mu poprawic
 3. dla kazdej nowej klasy tworzymy folder w app
 4. kodzimy wg oficjalnego stylu pythona https://www.python.org/dev/peps/pep-0008/
-5. dla kazdej stworzonej przez nas klasy piszemy testy!!!
-6. uruchamiamy testy
-7. jesli wsjo dziala to robimy commit i push
+5. dla kazdej stworzonej przez nas klasy piszemy testy!!! 
+6. uruchamiamy wszystkie testy (wyjasnione ponizej)
+7. nie pushujemy jesli cos nie działa!!!
+8. jesli wsjo dziala to robimy commit i push
     
-Jak pisać testy
----------------
+Jak pisać i uruchamiać testy
+----------------------------
 Testy piszemy w katalogu test, korzystamy z podstawowej biblioteki pythona unittest. Dla kazdego modulu tworzymy nowy plik.
 Wszystkie nazwy plików testowych musza zaczynac sie na "test", np "test_default.py".
 Jesli w app stworzymy modul o nazwie "scheduler.py" to w test tworzymy plik o nazwie "test_scheduler.py".
