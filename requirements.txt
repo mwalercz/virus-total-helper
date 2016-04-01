@@ -1,0 +1,9 @@
+pypi-publisher
+APScheduler==3.0.6
+nose2==0.6.4
+ply==3.8
+pytz==2016.3
+requests==2.9.1
+six==1.10.0
+SQLAlchemy==1.0.12
+tzlocal==1.2.2
