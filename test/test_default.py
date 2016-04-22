@@ -7,3 +7,4 @@ class TestDefault(TestCase):
         b = 1
         self.assertEqual(a, b)
 
+
