@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from app.parsing.finder import Finder
 from app.parsing.parser import Parser, Tag
 
 
@@ -2531,4 +2532,5 @@ $(document).ready(function(){
 
                 '''
         real_element_list = self.parser.parse(data)
-        print(real_element_list)
+        finder = Finder(real_element_list)
+        print(finder.content_list)
