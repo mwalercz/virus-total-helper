@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 
-from app.lexer import Lexer
+from app.parsing.lexer import Lexer
 
 
 class Tag:
@@ -13,17 +13,8 @@ class Tag:
 
     def __repr__(self):
         return "TAG: { " \
-               "tagname: " + self.tagname + \
-               ", attributes: " + str(self.attributes) + "}\n"
+               "tagname: " + self.tagname + ", attributes: " + str(self.attributes) + "}\n"
 
-    # def __eq__(self, other):
-    #     if self.tagname == other.tagname:
-    #         for attribute in self.attributes:
-    #             if other.attributes[attribute] != self.attributes[attribute]:
-    #                 return False
-    #         return True
-    #     else:
-    #         return False
 
 
 class Content:
@@ -33,11 +24,13 @@ class Content:
         else:
             self.content = head + " " + str(rest)
 
+        self.content = self.content.strip()
+
     def __str__(self):
         return self.content
 
     def __repr__(self):
-        return "CONTENT: {" + self.content + "}"
+        return "CONTENT: {" + self.content + "}\n"
 
 
 class Parser:
@@ -57,6 +50,8 @@ class Parser:
     def p_element(self, p):
         '''element : tag
                    | content
+                   | close_tag
+                   | close_tag element
                    | tag element
                    | content element '''
         self.element_list.append(p[1])
@@ -68,6 +63,15 @@ class Parser:
             p[0] = Tag(p[2], p[3])
         else:
             p[0] = Tag(p[2])
+
+        if p[0].tagname == "script":
+            p.lexer.push_state("script")
+
+    def p_close_tag(self, p):
+        '''close_tag : OPEN_DASH tagname CLOSE'''
+        p[0] = Tag(p[2])
+
+
 
     def p_tagname(self, p):
         '''tagname : WORD'''
@@ -98,7 +102,11 @@ class Parser:
         else:
             p[0] = Content(p[1], p[2])
 
+
     def p_error(self, p):
-        print("Syntax error in input!")
-
-
+        if p:
+             print("Syntax error in input!", p.type + " ", p.value)
+             p.lexer.skip(1)
+             self.parser.errok()
+        else:
+             print("Syntax error at EOF")
