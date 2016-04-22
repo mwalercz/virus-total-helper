@@ -2533,4 +2533,4 @@ $(document).ready(function(){
                 '''
         real_element_list = self.parser.parse(data)
         finder = Finder(real_element_list)
-        print(finder.content_list)
+        print(finder.element_list)

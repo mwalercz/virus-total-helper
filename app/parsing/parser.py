@@ -15,6 +15,12 @@ class Tag:
         return "TAG: { " \
                "tagname: " + self.tagname + ", attributes: " + str(self.attributes) + "}\n"
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
+
 
 
 class Content:
@@ -31,6 +37,12 @@ class Content:
 
     def __repr__(self):
         return "CONTENT: {" + self.content + "}\n"
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
 
 
 class Parser:
