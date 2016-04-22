@@ -6,11 +6,11 @@ class Dispatcher:
         self.urls = urls
 
     def dispatch_request(self, request):
-        fun = self._pick_handler_function(request.command + request.path)
+        fun = self._pick_handler_function(request.command, request.path)
         return self._execute_handler_function(request, fun)
 
-    def _pick_handler_function(self, command_and_path):
-        return self.urls[command_and_path]
+    def _pick_handler_function(self, command, path):
+        return self.urls[command + path]
 
     def _execute_handler_function(self, request, fun):
         if 'request' in inspect.signature(fun).parameters:
