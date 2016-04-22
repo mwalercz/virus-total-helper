@@ -8,6 +8,8 @@ class Tag:
         self.tagname = tagname
         self.attributes = attributes
 
+    def __str__(self):
+        return self.attributes
 
     def __repr__(self):
         return "TAG: { " \
@@ -35,7 +37,7 @@ class Content:
         return self.content
 
     def __repr__(self):
-        return "CONTENT: {" + self.content + "}\n"
+        return "CONTENT: {" + self.content + "}"
 
 
 class Parser:
@@ -48,18 +50,15 @@ class Parser:
         lexer = Lexer()
         lexer.build()
         lexer.input(data)
-        self.parser.parse(lexer=lexer.lexer, debug=True)
+        self.parser.parse(lexer=lexer.lexer)
         self.element_list.reverse()
         return self.element_list
 
     def p_element(self, p):
         '''element : tag
                    | content
-                   | close_tag
-                   | close_tag element
                    | tag element
                    | content element '''
-        p[0] = p[1]
         self.element_list.append(p[1])
 
     def p_tag(self, p):
@@ -69,16 +68,6 @@ class Parser:
             p[0] = Tag(p[2], p[3])
         else:
             p[0] = Tag(p[2])
-
-        if p[0].tagname == "script":
-            p.lexer.begin("script")
-
-    def p_close_tag(self, p):
-        '''close_tag : OPEN_DASH tagname CLOSE'''
-
-        p[0] = Tag(p[2])
-        if p[0].tagname == 'script':
-            p.lexer.begin("INITIAL")
 
     def p_tagname(self, p):
         '''tagname : WORD'''
@@ -110,6 +99,6 @@ class Parser:
             p[0] = Content(p[1], p[2])
 
     def p_error(self, p):
-        print("Syntax error in input! " + str(p))
+        print("Syntax error in input!")
 
 

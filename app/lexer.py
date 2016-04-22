@@ -1,14 +1,11 @@
 import ply.lex as lex
 
 
+
 class Lexer:
-    states = (
-        ('insidequotes', 'exclusive'),
-        ('insidetag', 'exclusive'),
-        ('script', 'exclusive')
-    )
+
+
     tokens = (
-        'OPEN_DASH',
         'OPEN',
         'CLOSE',
         'ASSIGN',
@@ -16,57 +13,24 @@ class Lexer:
         'WORD'
     )
 
-    # wewnatrz script
-    def t_script_WORD(self, t):
-        r'[^< ]+'
+    t_OPEN = r'<'
+    t_CLOSE = r'>'
+    t_ASSIGN = r'='
+    t_QUOTE = r'"'
+    t_WORD = r'[^><"= ]+'
 
-    def t_script_OPEN_DASH(self, t):
-        r'</'
-
-    # wewnatrz ""
-    def t_insidequotes_WORD(self, t):
-        r'[^" ]+'
-
-    def t_insidequotes_QUOTE(self, t):
-        r'"'
-        t.lexer.begin("insidetag")
-
-    # wewnatrz <>
-    def t_insidetag_CLOSE(self, t):
-        r'>'
-        t.lexer.begin('INITIAL')
-
-    def t_insidetag_ASSIGN(self, t):
-        r'='
-
-    def t_insidetag_QUOTE(self, t):
-        r'"'
-        t.lexer.begin('insidequotes')
-
-    def t_insidetag_WORD(self, t):
-        r'[^>"= ]+'
-
-    # na zewnatrz <>
-    def t_INITIAL_OPEN(self, t):
-        r'<'
-        t.lexer.begin("insidetag")
-
-    def t_INITIAL_WORD(self, t):
-        r'[^< ]+'
-
-    # zawsze
-    def t_ANY_newline(self, t):
+    def t_newline(self, t):
         r'\n+'
         t.lexer.lineno += len(t.value)
 
-    t_ANY_ignore = ' \t'
+    t_ignore = ' \t'
 
-    def t_ANY_error(self, t):
-        print("Illegal character '%s'" % t[0])
+    def t_error(self, t):
+        print("Illegal character '%s'" % t.value[0])
         t.lexer.skip(1)
 
     def build(self, **kwargs):
-        self.lexer = lex.lex(module=self,  **kwargs)
+        self.lexer = lex.lex(module=self, **kwargs)
 
     def input(self, data):
         self.lexer.input(data)
@@ -78,8 +42,6 @@ class Lexer:
             if not tok:
                 break
             print(tok)
-
-
 if "__main__" == "__name":
     m = Lexer()
     m.build()  # Build the lexer
@@ -123,7 +85,7 @@ if "__main__" == "__name":
 
 
       <ul class="nav pull-right">
-
+    
 
         <li>
           <a id="mnu-join" data-toggle="modal" data-backdrop="static"
