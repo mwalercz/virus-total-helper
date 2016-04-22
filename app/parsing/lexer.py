@@ -46,6 +46,10 @@ class Lexer:
         r'[^" ]+'
         return t
 
+    def t_OPEN_DASH(self, t):
+        r'</'
+        return t
+
     def t_OPEN(self, t):
         r'<'
         return t

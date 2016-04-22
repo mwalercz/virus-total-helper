@@ -26,7 +26,6 @@ class TestParserFinder(TestCase):
         finder = Finder(element_list)
         real_attributes_found = finder.find_attributes(attributes)
         expected_attributes_found = {"MIMEType": "application/pdf", "XMPToolkit": "XMP toolkit 2.9.1-13, framework 1.6"}
-
         self.assertEqual(real_attributes_found, expected_attributes_found)
 
     def test_antyviruses(self):

@@ -8,9 +8,6 @@ class Tag:
         self.tagname = tagname
         self.attributes = attributes
 
-    def __str__(self):
-        return self.attributes
-
     def __repr__(self):
         return "TAG: { " \
                "tagname: " + self.tagname + ", attributes: " + str(self.attributes) + "}\n"
@@ -29,7 +26,6 @@ class Content:
             self.content = head
         else:
             self.content = head + " " + str(rest)
-
         self.content = self.content.strip()
 
     def __str__(self):

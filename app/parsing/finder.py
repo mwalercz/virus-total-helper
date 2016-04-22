@@ -1,11 +1,11 @@
 from app.parsing.parser import Content, Tag
 
 
-class NoSuchAttribute:
+class NoSuchAttribute(Exception):
     pass
 
 
-class NoMoreAntyviruses(object):
+class NoMoreAntyviruses(Exception):
     pass
 
 
@@ -62,5 +62,4 @@ class Finder:
                              self.element_list[index + 1].attributes['title']}
 
             antyviruses_found.update(antyvirus)
-
         return antyviruses_found

@@ -2,8 +2,9 @@ import inspect
 
 
 class Dispatcher:
-    def __init__(self, urls):
+    def __init__(self, urls, scheduler):
         self.urls = urls
+        self.scheduler = scheduler
 
     def dispatch_request(self, request):
         fun = self._pick_handler_function(request.command, request.path)
@@ -13,13 +14,13 @@ class Dispatcher:
         return self.urls[command + path]
 
     def _execute_handler_function(self, request, fun):
-        if 'request' in inspect.signature(fun).parameters:
+        parameter_number = len(inspect.signature(fun).parameters)
+        if parameter_number == 1:
             return fun(request)
-        if 'binary' in inspect.signature(fun).parameters:
-            return fun(request.get_binary())
-        if 'json' in inspect.signature(fun).parameters:
-            return fun(request.get_json())
-        raise ArgumentLookupError(fun)
+        elif parameter_number == 2:
+            return fun(request, self.scheduler)
+        else:
+            raise ArgumentLookupError(fun)
 
 
 class ArgumentLookupError(Exception):
