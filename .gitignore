@@ -21,6 +21,10 @@ develop-eggs
 lib
 lib64
 
+/test/jobs.sqlite
+/vt.log
+/app/parsing/parser.out
+/app/parsing/parsetab.py
 # Installer logs
 pip-log.txt
 
