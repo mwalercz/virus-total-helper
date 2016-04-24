@@ -45,7 +45,7 @@ class Parser:
     def __init__(self):
         self.element_list = []
         self.tokens = Lexer.tokens
-        self.parser = yacc.yacc(module=self)
+        self.parser = yacc.yacc(module=self, errorlog=yacc.NullLogger())
 
     def parse(self, data):
         lexer = Lexer()

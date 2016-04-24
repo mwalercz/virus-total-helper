@@ -16,10 +16,10 @@ class TestScheduler(TestCase):
     def setUpClass(cls):
         scheduler = Scheduler()
         scheduler.start()
-        cls.scheduler = scheduler.aps_scheduler
+        cls.scheduler = scheduler.apscheduler
 
     def test_simple_function(self):
         self.scheduler.add_job(simple_function)
 
     def test_fun_with_args(self):
-        self.scheduler.add_job(fun_with_args, args={10})
+        self.scheduler.add_job(lambda: fun_with_args(15))

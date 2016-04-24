@@ -6,7 +6,7 @@ class Dispatcher:
         self.urls = urls
         self.scheduler = scheduler
 
-    def dispatch_request(self, request):
+    def dispatch(self, request):
         fun = self._pick_handler_function(request.command, request.path)
         return self._execute_handler_function(request, fun)
 

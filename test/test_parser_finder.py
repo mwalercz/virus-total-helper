@@ -10,7 +10,7 @@ class TestParserFinder(TestCase):
 
     def test_simple_attributes(self):
         data = '''
-             <div class="enum">
+            <div class="enum">
               <div class="floated-field-key">MIMEType</div>
               <div class="floated-field-value">application/pdf</div>
               <br style="clear:both;"/>
@@ -30,7 +30,7 @@ class TestParserFinder(TestCase):
 
     def test_antyviruses(self):
         data = '''
-             <tr>
+       <tr>
           <td class="ltr">
             Zoner
           </td>
@@ -40,8 +40,8 @@ class TestParserFinder(TestCase):
           <td class="ltr">
             20160417
           </td>
-      </tr>
-      <tr>
+       </tr>
+       <tr>
           <td class="ltr">
             nProtect
           </td>
@@ -51,7 +51,7 @@ class TestParserFinder(TestCase):
           <td class="ltr">
             20160415
           </td>
-      </tr>
+       </tr>
       '''
         element_list = self.parser.parse(data)
         finder = Finder(element_list)
@@ -114,7 +114,6 @@ class TestParserFinder(TestCase):
                       </td>
                   </tr>
             '''
-
         element_list = self.parser.parse(data)
         finder = Finder(element_list)
         real_info = finder._find_first_page_info()

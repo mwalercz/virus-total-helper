@@ -22,17 +22,17 @@ class TestDispatcher(TestCase):
         self.dispatcher = Dispatcher(self.urls, self.scheduler)
 
     def test_request(self):
-        response = self.dispatcher.dispatch_request(RequestMock('GET', '/request'))
+        response = self.dispatcher.dispatch(RequestMock('GET', '/request'))
         self.assertEqual(response, "request_handler: request: GET/request")
 
     def test_request_scheduler(self):
-        response = self.dispatcher.dispatch_request(RequestMock('POST', '/schedule'))
+        response = self.dispatcher.dispatch(RequestMock('POST', '/schedule'))
         self.assertEqual(response, "request_scheduler: request: " +
                          'POST/schedule' + ", scheduler: " + self.scheduler)
 
     def test_fail_key(self):
         try:
-            response = self.dispatcher.dispatch_request(RequestMock('GET', '/json'))
+            response = self.dispatcher.dispatch(RequestMock('GET', '/json'))
         except KeyError:
             response = 'KeyError'
         self.assertEqual(response, 'KeyError')

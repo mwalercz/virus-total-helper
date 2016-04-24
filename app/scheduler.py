@@ -16,7 +16,7 @@ class Scheduler:
             'coalesce': False,
             'max_instances': 3
         }
-        self.aps_scheduler = BackgroundScheduler()
+        self.apscheduler = BackgroundScheduler()
 
     def start(self):
-        self.aps_scheduler.start()
+        self.apscheduler.start()

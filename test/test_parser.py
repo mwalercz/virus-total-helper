@@ -25,7 +25,6 @@ class TestParser(TestCase):
                 alert( "</script>" ) ;io;a <div>
             </script>
                 '''
-
         real_element_list = self.parser.parse(data)
         expected_element_list = [Tag('haha'),
                                  Tag('script', attributes={'type': "text/javascript"}),
@@ -36,9 +35,9 @@ class TestParser(TestCase):
     def test_script(self):
         data = '''
             <html>
-            <script type="text/javascript">
-            haha <>
-            </script>
+                <script type="text/javascript">
+                    haha <>
+                </script>
             </html>
             '''
         real_element_list = self.parser.parse(data)
@@ -52,7 +51,7 @@ class TestParser(TestCase):
     def test_simple_script(self):
         data = '''
             <script>
-            a
+                a
             </script>
             '''
         real_element_list = self.parser.parse(data)
