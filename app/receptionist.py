@@ -7,12 +7,12 @@ from app.clienthandler import ClientHandler
 
 
 class Receptionist(Thread):
-    def __init__(self, dispatcher, port=5005, connection_no=5):
+    def __init__(self, dispatcher, hostname='localhost', port=5005, connection_no=5):
         super(Receptionist, self).__init__(name="Receptionist")
         # dispatcher jest potrzebny tylko zeby podać go dalej do wątków ClientHandler (jest thread-safe),
         # mozna by zrobic z niego singletona
         self.dispatcher = dispatcher
-        self.hostname = 'localhost'
+        self.hostname = hostname
         self.port = port
         self.connection_no = connection_no
         self.running = True
@@ -26,9 +26,9 @@ class Receptionist(Thread):
         self.server_socket.listen(self.connection_no)
 
     def run(self):
-        logging.info('Server started running on port: ' + str(self.port))
+        logging.info('Server running on: ' + str(self.hostname) + ":" + str(self.port))
         self.accept_loop()
-        logging.info("Receptionist finished gracefully")
+        logging.info("Server finished running")
 
     def accept_loop(self):
         while True:

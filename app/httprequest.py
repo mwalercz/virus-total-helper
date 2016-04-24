@@ -18,3 +18,6 @@ class HTTPRequest:
 
     def json(self):
         return json.loads(self.body)
+
+    def binary(self):
+        raise NotImplementedError

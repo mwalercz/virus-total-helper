@@ -27,6 +27,7 @@ class App:
         self.dispatcher = Dispatcher(scheduler=self.scheduler.apscheduler,
                                      urls=urls.URLS)
         self.receptionist = Receptionist(dispatcher=self.dispatcher,
+                                         hostname=config.hostname,
                                          port=config.port,
                                          connection_no=config.connection_no)
 

@@ -20,7 +20,7 @@ class ApplicationTest(TestCase):
         response = requests.get('http://localhost:5005/default')
         self.assertEqual(response.text, 'Hello world')
 
-    # sprawdza czy można dwa razy się połączyć do jednego socketa
+    # sprawdza czy można dwa razy się połączyć do naszego serwera
     def test_default_request2(self):
         response = requests.get('http://localhost:5005/default')
         self.assertEqual(response.text, 'Hello world')
