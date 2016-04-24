@@ -10,28 +10,27 @@ class ClientHandler(Thread):
         super(ClientHandler, self).__init__(name='ClientHandler')
         self.dispatcher = dispatcher
         self.client_socket = client_socket
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.client_socket.settimeout(5)
 
     def run(self):
-        self.logger.info(msg="New connection created with: " + str(self.client_socket))
+        logging.info(msg="New connection created with: " + str(self.client_socket))
         self._handle_connection()
-        self.logger.info(msg="Connection closed with: " + str(self.client_socket))
+        logging.info(msg="Connection closed with: " + str(self.client_socket))
 
     def _handle_connection(self):
-        try:
+        with self.client_socket:
             raw_data = self._read_from_socket()
             request = HTTPRequest(raw_data)
             response = self.dispatcher.dispatch(request)
             self._write_to_socket(response)
-        finally:
-            self._close_connection()
+            self._shutdown_socket()
 
     def _read_from_socket(self):
         data_array = []
         while True:
             data = self.client_socket.recv(4096)
             if self._is_finished(data):
-                self.logger.debug(msg="received all data")
+                logging.debug(msg="received all data")
                 data_array.append(data)
                 break
             else:
@@ -51,6 +50,5 @@ class ClientHandler(Thread):
         binary_response = response.encode('utf-8')
         self.client_socket.sendall(binary_response)
 
-    def _close_connection(self):
+    def _shutdown_socket(self):
         self.client_socket.shutdown(SHUT_RDWR)
-        self.client_socket.close()

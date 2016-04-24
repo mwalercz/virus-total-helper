@@ -11,18 +11,21 @@ from .receptionist import Receptionist
 
 class App:
     def initialize(self):
-        self.initialize_logs()
-        self.initialize_objects()
-        self.initialize_signals()
-        self.start_receptionist_and_scheduler()
+        self._initialize_logs()
+        self._initialize_objects()
+        self._initialize_signals()
+        self._start_receptionist_and_scheduler()
         # self.wait_for_threads_to_finish()
 
-    def initialize_logs(self):
+    def exit_gracefully(self):
+        self.receptionist.stop()
+
+    def _initialize_logs(self):
         logging.basicConfig(filename=config.log_filename,
                             level=logging.DEBUG,
                             format='%(asctime)s %(levelname)s: %(name)s  %(message)s')
 
-    def initialize_objects(self):
+    def _initialize_objects(self):
         self.scheduler = Scheduler()
         self.dispatcher = Dispatcher(scheduler=self.scheduler.apscheduler,
                                      urls=urls.URLS)
@@ -31,18 +34,17 @@ class App:
                                          port=config.port,
                                          connection_no=config.connection_no)
 
-    def initialize_signals(self):
+    def _initialize_signals(self):
         signal.signal(signal.SIGINT, self.exit_gracefully)
         signal.signal(signal.SIGTERM, self.exit_gracefully)
 
-    def start_receptionist_and_scheduler(self):
+    def _start_receptionist_and_scheduler(self):
         self.scheduler.start()
         self.receptionist.start()
 
-    def wait_for_threads_to_finish(self):
+    def _wait_for_threads_to_finish(self):
         for thread in threading.enumerate():
             if thread is not threading.current_thread():
                 thread.join()
 
-    def exit_gracefully(self):
-        self.receptionist.stop()
+

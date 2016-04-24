@@ -7,11 +7,7 @@ class TestHTTPRequest(TestCase):
 
     def test_post_req(self):
         data = '''
-                POST /haha HTTP/1.1\r\n
-                Host: onet.pl\r\n
-                Content-Type: application/json\r\n
-                Cache-Control: no-cache\r\n
-                Postman-Token: 3f51ed67-38ae-48be-c787-873d3bf96ac5\r\n\r\n
+                POST /haha HTTP/1.1\r\nHost: onet.pl\r\nContent-Type: application/json\r\nCache-Control: no-cache\r\nPostman-Token: 3f51ed67-38ae-48be-c787-873d3bf96ac5\r\n\r\n
 {
     "key1": "value1",
     "key2": "value2"

@@ -19,7 +19,6 @@ class Tag:
             return False
 
 
-
 class Content:
     def __init__(self, head, rest=None):
         if rest is None:
