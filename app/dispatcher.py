@@ -1,5 +1,7 @@
 import inspect
 
+from app.http import HTTPResponse
+
 
 class Dispatcher:
     def __init__(self, urls, scheduler):
@@ -15,10 +17,10 @@ class Dispatcher:
 
     def _execute_handler_function(self, request, fun):
         parameter_number = len(inspect.signature(fun).parameters)
-        if parameter_number == 1:
-            return fun(request)
-        elif parameter_number == 2:
-            return fun(request, self.scheduler)
+        if parameter_number == 2:
+            return fun(request, HTTPResponse())
+        elif parameter_number == 3:
+            return fun(request, HTTPResponse(), self.scheduler)
         else:
             raise ArgumentLookupError(fun)
 

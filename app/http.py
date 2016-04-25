@@ -53,3 +53,21 @@ class HTTPRequest:
                 return None
         else:
             return None
+
+
+# zwracamy tylko JSONY więc content-type jest już zdefiniowany
+class HTTPResponse:
+    def __init__(self):
+        self.protocol = "HTTP/1.1"
+        self.status = "200 OK"
+        self.headers = {"Content-Type": "application/json"}
+        self.body = {}
+
+    def __str__(self):
+        string = self.protocol + " " + self.status + '\r\n'
+        for key, value in self.headers.items():
+            string += key + ': ' + value + '\r\n'
+        string += '\r\n'
+        json_body = json.dumps(self.body)
+        string += json_body
+        return string

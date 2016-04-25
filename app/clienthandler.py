@@ -2,7 +2,7 @@ import logging
 from _socket import SHUT_RDWR
 from threading import Thread
 
-from app.httprequest import HTTPRequest
+from app.http import HTTPRequest
 
 
 class ClientHandler(Thread):
@@ -47,7 +47,7 @@ class ClientHandler(Thread):
             return False
 
     def _write_to_socket(self, response):
-        binary_response = response.encode('utf-8')
+        binary_response = str(response).encode('utf-8')
         self.client_socket.sendall(binary_response)
 
     def _shutdown_socket(self):

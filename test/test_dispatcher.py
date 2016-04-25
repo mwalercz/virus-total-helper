@@ -1,21 +1,24 @@
 from unittest import TestCase
 
 from app.dispatcher import Dispatcher, ArgumentLookupError
+from app.http import HTTPResponse
 
 
-def request_handler(request):
-    return "request_handler: request: " + str(request)
+def request_handler(request, response):
+    response.body = {"request_handler": str(request)}
+    return response
 
 
-def request_scheduler_handler(request, scheduler):
-    return "request_scheduler: request: " + str(request) + ", scheduler: " + str(scheduler)
+def request_scheduler_handler(request, response, scheduler):
+    response.body = {"request_scheduler_handler": str(request)}
+    return response
 
 
 URLS = {'POST/schedule': request_scheduler_handler,
         'GET/request': request_handler}
 
 
-class TestDispatcher(TestCase):
+class TestDispatcherAndResponse(TestCase):
     def setUp(self):
         self.urls = URLS
         self.scheduler = 'scheduler'
@@ -23,12 +26,15 @@ class TestDispatcher(TestCase):
 
     def test_request(self):
         response = self.dispatcher.dispatch(RequestMock('GET', '/request'))
-        self.assertEqual(response, "request_handler: request: GET/request")
+        self.assertEqual(str(response), 'HTTP/1.1 200 OK\r\n'
+                                        'Content-Type: application/json\r\n\r\n'
+                                        '{"request_handler": "GET/request"}')
 
     def test_request_scheduler(self):
         response = self.dispatcher.dispatch(RequestMock('POST', '/schedule'))
-        self.assertEqual(response, "request_scheduler: request: " +
-                         'POST/schedule' + ", scheduler: " + self.scheduler)
+        self.assertEqual(str(response), 'HTTP/1.1 200 OK\r\n'
+                                        'Content-Type: application/json\r\n\r\n'
+                                        '{"request_scheduler_handler": "POST/schedule"}')
 
     def test_fail_key(self):
         try:
@@ -50,4 +56,4 @@ class RequestMock:
         return {'key1': 'value1', 'key2': 'value2'}
 
     def binary(self):
-        return 'binary'
+        return b'binary'

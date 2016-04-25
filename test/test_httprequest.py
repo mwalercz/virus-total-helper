@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.httprequest import HTTPRequest
+from app.http import HTTPRequest
 
 
 class TestHTTPRequest(TestCase):

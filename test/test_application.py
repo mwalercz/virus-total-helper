@@ -18,9 +18,9 @@ class ApplicationTest(TestCase):
 
     def test_default_request(self):
         response = requests.get('http://localhost:5005/default')
-        self.assertEqual(response.text, 'Hello world')
+        self.assertEqual(response.text, '{"greetings": "hello world"}')
 
     # sprawdza czy można dwa razy się połączyć do naszego serwera
     def test_default_request2(self):
         response = requests.get('http://localhost:5005/default')
-        self.assertEqual(response.text, 'Hello world')
+        self.assertEqual(response.text, '{"greetings": "hello world"}')
