@@ -2,6 +2,10 @@ import json
 import re
 
 
+class MethodNotSupported(Exception):
+    pass
+
+
 class HTTPRequest:
     def __init__(self, raw_data):
         self.raw_data = raw_data
@@ -19,20 +23,38 @@ class HTTPRequest:
         self._parse_headers(raw_headers)
 
     def _parse_headers(self, raw_headers):
-        def aux(raw_headers):
-            head, sep, rest = raw_headers.partition('\r\n')
-            if rest == "":
-                if head:
-                    key, sep, value = head.partition(':')
-                    self.headers.update({key: value})
-                else:
-                    return
-            else:
+        head, sep, rest = raw_headers.partition('\r\n')
+        if rest == "":
+            if head:
                 key, sep, value = head.partition(':')
                 self.headers.update({key: value})
-                aux(rest)
+            else:
+                return
+        else:
+            key, sep, value = head.partition(':')
+            self.headers.update({key: value})
+            self._parse_headers(rest)
 
-        aux(raw_headers)
+    def is_finished(self):
+        if self.command == "GET":
+            return self._is_get_finished()
+        elif self.command == "POST":
+            return self._is_post_finished()
+        else:
+            raise MethodNotSupported
+
+    def _is_post_finished(self):
+        content_length = int(self.headers['Content-Length'])
+        body_length = len(self.body)
+        return content_length == len(self.body)
+
+    def _is_get_finished(self):
+        if self.raw_data:
+            length = len(self.raw_data)
+            last_chars = self.raw_data[length - 4:length]
+            return last_chars == '\r\n\r\n'
+        else:
+            return False
 
     def json(self):
         content_type = "Content-Type"
@@ -48,7 +70,7 @@ class HTTPRequest:
         content_type = "Content-Type"
         if content_type in self.headers:
             if "application/octet-stream" in self.headers[content_type]:
-                return self.body.decode("utf-8")
+                return self.body.encode("utf-8")
             else:
                 return None
         else:

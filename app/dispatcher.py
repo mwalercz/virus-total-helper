@@ -3,6 +3,11 @@ import inspect
 from app.http import HTTPResponse
 
 
+class NoSuchUrl(Exception):
+    def __init__(self, url):
+        self.url = url
+
+
 class Dispatcher:
     def __init__(self, urls, scheduler):
         self.urls = urls
@@ -13,7 +18,11 @@ class Dispatcher:
         return self._execute_handler_function(request, fun)
 
     def _pick_handler_function(self, command, path):
-        return self.urls[command + path]
+        key = command + path
+        if key in self.urls:
+            return self.urls[key]
+        else:
+            raise NoSuchUrl(key)
 
     def _execute_handler_function(self, request, fun):
         parameter_number = len(inspect.signature(fun).parameters)

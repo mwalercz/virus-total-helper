@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.dispatcher import Dispatcher, ArgumentLookupError
+from app.dispatcher import Dispatcher, ArgumentLookupError, NoSuchUrl
 from app.http import HTTPResponse
 
 
@@ -39,9 +39,10 @@ class TestDispatcherAndResponse(TestCase):
     def test_fail_key(self):
         try:
             response = self.dispatcher.dispatch(RequestMock('GET', '/json'))
-        except KeyError:
-            response = 'KeyError'
-        self.assertEqual(response, 'KeyError')
+            # tutaj juz nie ma prawa dojsc bo dispatcher sie wysypie
+            self.assertEqual(True, False)
+        except NoSuchUrl as exc:
+            self.assertEqual(exc.url, "GET/json")
 
 
 class RequestMock:

@@ -95,7 +95,7 @@ class Parser:
 
     def p_attribute(self, p):
         '''attribute : WORD ASSIGN QUOTE content QUOTE
-                | WORD '''
+                     | WORD '''
         if len(p) == 6:
             p[0] = {p[1]: str(p[4])}
         else:
