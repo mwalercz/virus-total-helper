@@ -28,14 +28,16 @@ class ClientHandler(Thread):
                 request = self._get_request()
                 response = self.dispatcher.dispatch(request)
             except NoSuchUrl as noSuchUrl:
+                logging.info("There is no method for url: " + noSuchUrl.url)
                 response = HTTPResponse()
                 response.body = {"error": "There is no method for url: " + noSuchUrl.url}
                 response.status = "404 Not found"
-            except MethodNotSupported:
+            except:
+                logging.error("ConnectionHandler exploded")
                 response = HTTPResponse()
                 response.status = "500 Server Internal Error"
-            self._write_to_socket(response)
 
+            self._write_to_socket(response)
 
     def _get_request(self):
         data_array = []
