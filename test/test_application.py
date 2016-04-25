@@ -26,7 +26,7 @@ class ApplicationTest(TestCase):
         self.assertEqual(response.text, '{"greetings": "hello world"}')
 
     def test_scheduler_request(self):
-         # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json
+        # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json
         headers = {"Content-Type": "application/json"}
         payload = {"x": 5}
         response = requests.post('http://localhost:5005/test/scheduler',
@@ -43,3 +43,7 @@ class ApplicationTest(TestCase):
                                  data=payload)
         # dostalismy z powrotem jsona bo nasz serwer umie tylko wysylac jsony
         self.assertEqual(response.text, '{"binary_request": "heheheszki"}')
+
+    def test_no_such_url(self):
+        response = requests.post('http://localhost:5005/test/no-such-url')
+        self.assertEqual(response.status_code, 404)

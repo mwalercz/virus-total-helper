@@ -12,15 +12,25 @@ class HTTPRequest:
         self.path = None
         self.command = None
         self.body = None
+        self.protocol = None
         self.headers = {}
-        self._parse_request()
+        self._parse_request(raw_data)
 
-    def _parse_request(self):
-        first_line, host, rest = self.raw_data.split(sep='\r\n', maxsplit=2)
-        self.command, self.path, protocol = first_line.split(maxsplit=2)
-        line_end = re.compile(r'\r\n\r\n')
-        raw_headers, self.body = line_end.split(rest, maxsplit=1)
+    def _parse_request(self, raw_data):
+        first_line, sep, rest = self.raw_data.partition('\r\n')
+        self.command, self.path, self.protocol = self._split_first_line(first_line)
+        host, sep, rest = rest.partition('\r\n')
+        raw_headers, self.body = self._split_headers_and_body(rest)
         self._parse_headers(raw_headers)
+
+    def _split_headers_and_body(self, rest):
+        raw_headers, sep, body = rest.partition('\r\n\r\n')
+        return raw_headers, body
+
+    def _split_first_line(self, first_line):
+        command, sep, rest, = first_line.partition(' ')
+        path, sep, protocol = rest.partition(' ')
+        return command, path, protocol
 
     def _parse_headers(self, raw_headers):
         head, sep, rest = raw_headers.partition('\r\n')

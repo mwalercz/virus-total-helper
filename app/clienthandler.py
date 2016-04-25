@@ -2,7 +2,8 @@ import logging
 from _socket import SHUT_RDWR
 from threading import Thread
 
-from app.http import HTTPRequest
+from app.dispatcher import NoSuchUrl
+from app.http import HTTPRequest, HTTPResponse, MethodNotSupported
 
 
 class SomethingWentWrong(Exception):
@@ -23,9 +24,18 @@ class ClientHandler(Thread):
 
     def _handle_connection(self):
         with self.client_socket:
-            request = self._get_request()
-            response = self.dispatcher.dispatch(request)
+            try:
+                request = self._get_request()
+                response = self.dispatcher.dispatch(request)
+            except NoSuchUrl as noSuchUrl:
+                response = HTTPResponse()
+                response.body = {"error": "There is no method for url: " + noSuchUrl.url}
+                response.status = "404 Not found"
+            except MethodNotSupported:
+                response = HTTPResponse()
+                response.status = "500 Server Internal Error"
             self._write_to_socket(response)
+
 
     def _get_request(self):
         data_array = []
@@ -38,7 +48,8 @@ class ClientHandler(Thread):
                 break
         if request is None:
             raise SomethingWentWrong
-        return request
+        else:
+            return request
 
     def _read_from_socket(self, data_array):
         data = self.client_socket.recv(4096)

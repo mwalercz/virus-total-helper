@@ -15,7 +15,7 @@ class App:
         self._initialize_objects()
         self._initialize_signals()
         self._start_receptionist_and_scheduler()
-        # self.wait_for_threads_to_finish()
+        self._wait_for_recepcionist_to_finish()
 
     def exit_gracefully(self):
         self.receptionist.stop()
@@ -42,9 +42,7 @@ class App:
         self.scheduler.start()
         self.receptionist.start()
 
-    def _wait_for_threads_to_finish(self):
+    def _wait_for_recepcionist_to_finish(self):
         for thread in threading.enumerate():
-            if thread is not threading.current_thread():
+            if thread.getName() == "Recepcionist":
                 thread.join()
-
-
