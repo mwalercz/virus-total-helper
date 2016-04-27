@@ -57,3 +57,13 @@ class TestParser(TestCase):
         real_element_list = self.parser.parse(data)
         expected_element_list = [Tag(tagname='script'), Content('a'), Tag(tagname='script')]
         self.assertEqual(real_element_list, expected_element_list)
+
+    def test_escape_char(self):
+        data = '''
+            <script>
+                alert ("haha \" </script>") uha
+            </script>
+            '''
+        real_element_list = self.parser.parse(data)
+        expected_element_list = [Tag(tagname='script'), Content('alert ("haha " </script> " ) uha'), Tag(tagname='script')]
+        self.assertEqual(real_element_list, expected_element_list)

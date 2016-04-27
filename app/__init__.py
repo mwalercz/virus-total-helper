@@ -12,6 +12,7 @@ from .receptionist import Receptionist
 class App:
     def initialize(self):
         self._initialize_logs()
+        # self._initialize_config() TODO
         self._initialize_objects()
         self._initialize_signals()
         self._start_receptionist_and_scheduler()

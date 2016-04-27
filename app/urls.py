@@ -1,5 +1,5 @@
-from app.requesthandlers import requesthandlers
+from app.requesthandlers import testhandlers
 
-URLS = {"GET/test/default": requesthandlers.default_handler,
-        "POST/test/scheduler": requesthandlers.scheduler_handler,
-        "POST/test/binary": requesthandlers.binary_handler}
+URLS = {"GET/test/default": testhandlers.default_handler,
+        "POST/test/scheduler": testhandlers.scheduler_handler,
+        "POST/test/binary": testhandlers.binary_handler}

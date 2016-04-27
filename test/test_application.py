@@ -6,7 +6,7 @@ import requests
 from app import App
 
 
-class ApplicationTest(TestCase):
+class TestApplication(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = App()

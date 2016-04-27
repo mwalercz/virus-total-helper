@@ -16,7 +16,8 @@ def scheduler_handler(request, response, scheduler):
 def binary_handler(request, response):
     # binary jest typu b''
     binary = request.binary()
-    # nasz serwer umie wysylac tylko jsony wiec trzeba to co dostalismy na jsona
+    # nasz serwer umie odsylac tylko JSONY
+    # dlatego body ma byc obiektem obslugiwanym przez json.dumps(), czyli dict, list
     response.body = {"binary_request": binary.decode('utf-8')}
     return response
 

@@ -14,6 +14,7 @@ class Lexer:
         'QUOTE',
         'WORD',
         'OPEN_DASH',
+        'ESCAPE',
         'WHITESPACE'
     )
 
@@ -36,11 +37,17 @@ class Lexer:
         r'[^ ]+'
         return t
 
+    def t_quotes_ESCAPE(self, t):
+        r'\[^ ]'
+        t.type = "WORD"
+        return t
+
     def t_quotes_QUOTE(self, t):
         r'"'
         t.lexer.pop_state()
         t.type = "WORD"
         return t
+
 
     def t_quotes_WORD(self, t):
         r'[^" ]+'
