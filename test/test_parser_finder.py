@@ -1,7 +1,8 @@
 from unittest import TestCase
 
-from app.parsing.finder import Finder
-from app.parsing.parser import Parser
+from htmlparser.parser import Parser
+
+from htmlparser.finder import Finder
 
 
 class TestParserFinder(TestCase):
@@ -24,7 +25,7 @@ class TestParserFinder(TestCase):
         attributes = ["XMPToolkit", "MIMEType"]
         element_list = self.parser.parse(data)
         finder = Finder(element_list)
-        real_attributes_found = finder.find_attributes(attributes)
+        real_attributes_found = finder.find_attributes_from_list(attributes)
         expected_attributes_found = {"MIMEType": "application/pdf", "XMPToolkit": "XMP toolkit 2.9.1-13, framework 1.6"}
         self.assertEqual(real_attributes_found, expected_attributes_found)
 
@@ -116,11 +117,11 @@ class TestParserFinder(TestCase):
             '''
         element_list = self.parser.parse(data)
         finder = Finder(element_list)
-        real_info = finder._find_first_page_info()
-        expected_info = {'Analysis date': '2016-04-17 09:21:07 UTC ( 5 days, 4 hours ago )',
+        real_info = finder.find_first_page_attributes()
+        expected_info = {'SHA256': '70ed0f6db9c50f9d05f3497386dba768f5efef59b6709c682bbc1951a93c47bf',
                          'Detection ratio': '0 / 57',
                          'File name': 'zadanie.pdf',
-                         'SHA256': '70ed0f6db9c50f9d05f3497386dba768f5efef59b6709c682bbc1951a93c47bf',
-                         'antyviruses': {'Yandex': 'File not detected', 'Zillya': 'File not detected'}}
+                         'Analysis date': '2016-04-17 09:21:07 UTC ( 5 days, 4 hours ago )',
+                         'Antyviruses': {'Yandex': 'File not detected', 'Zillya': 'File not detected'}}
 
         self.assertEqual(real_info, expected_info)

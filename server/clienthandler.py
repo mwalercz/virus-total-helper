@@ -2,8 +2,8 @@ import logging
 from _socket import SHUT_RDWR
 from threading import Thread
 
-from app.dispatcher import NoSuchUrl
-from app.http import HTTPRequest, HTTPResponse, MethodNotSupported
+from server.dispatcher import NoSuchUrl
+from server.http import HTTPRequest, HTTPResponse, MethodNotSupported
 
 
 class SomethingWentWrong(Exception):

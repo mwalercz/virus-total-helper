@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import requests
 
-from app import App
+from server import App
 
 
 class TestApplication(TestCase):

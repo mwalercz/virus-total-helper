@@ -23,8 +23,8 @@ lib64
 
 /test/jobs.sqlite
 /vt.log
-/app/parsing/parser.out
-/app/parsing/parsetab.py
+/htmlparser/parser.out
+/htmlparser/parsetab.py
 # Installer logs
 pip-log.txt
 

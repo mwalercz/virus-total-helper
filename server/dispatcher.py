@@ -1,6 +1,6 @@
 import inspect
 
-from app.http import HTTPResponse
+from server.http import HTTPResponse
 
 
 class NoSuchUrl(Exception):

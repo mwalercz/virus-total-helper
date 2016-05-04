@@ -1,12 +1,10 @@
-from app.parsing.parser import Content, Tag
+import collections
 
+from .parser import Content, Tag
 
 class NoSuchAttribute(Exception):
     pass
 
-
-class NoMoreAntyviruses(Exception):
-    pass
 
 
 class Finder:
@@ -18,22 +16,16 @@ class Finder:
             if isinstance(element, Content):
                 self.content_list.append(element)
 
-    def find_attributes(self, attributes_to_find):
-        if len(attributes_to_find) == 0:
-            return self._find_first_page_info()
-        else:
-            return self._find_simple_attributes(attributes_to_find)
-
-    def _find_simple_attributes(self, attributes_to_find):
-        attributes_found = {}
+    def find_attributes_from_list(self, attributes_to_find):
+        attributes_found = collections.OrderedDict()
         for element_to_find in attributes_to_find:
             found_element = self._find_simple_attribute(element_to_find)
             attributes_found.update(found_element)
         return attributes_found
 
-    def _find_first_page_info(self):
-        attributes_found = self._find_simple_attributes(self.first_page_simple_element_list)
-        attributes_found['antyviruses'] = self._find_antyviruses_info()
+    def find_first_page_attributes(self):
+        attributes_found = self.find_attributes_from_list(self.first_page_simple_element_list)
+        attributes_found['Antyviruses'] = self._find_antyviruses_info()
         return attributes_found
 
     # w przypadku prostych atrybutów zawsze szukamy następnego elementu typu Content
@@ -44,22 +36,41 @@ class Finder:
                 j = i + 1
                 break
         if j == -1:
-            raise NoSuchAttribute
+            return {element_to_find: "Element not found"}
         else:
             return {element_to_find: self.content_list[j].content}
 
-    def _next_antyvirus_tag_index(self):
+    def _find_antyviruses_info(self):
+        antyviruses_found = {}
+        antyviruses_found = self._find_red_antyviruses_info(antyviruses_found)
+        antyviruses_found = self._find_green_antyviruses_info(antyviruses_found)
+        return antyviruses_found
+
+    def _next_green_antyvirus(self):
         antyvirusTag = Tag(tagname='td', attributes={'class': 'ltr text-green'})
         for i, element in enumerate(self.element_list):
             if antyvirusTag == element:
                 yield i
         return None
 
-    def _find_antyviruses_info(self):
-        antyviruses_found = {}
-        for index in self._next_antyvirus_tag_index():
+    def _find_green_antyviruses_info(self, antyviruses_found):
+        for index in self._next_green_antyvirus():
             antyvirus = {self.element_list[index - 2].content:
                              self.element_list[index + 1].attributes['title']}
 
+            antyviruses_found.update(antyvirus)
+        return antyviruses_found
+
+    def _next_red_antyvirus(self):
+        antyvirusTag = Tag(tagname='td', attributes={'class': 'ltr text-red'})
+        for i, element in enumerate(self.element_list):
+            if antyvirusTag == element:
+                yield i
+        return None
+
+    def _find_red_antyviruses_info(self, antyviruses_found):
+        for index in self._next_red_antyvirus():
+            antyvirus = {self.element_list[index - 2].content:
+                             self.element_list[index + 1].content}
             antyviruses_found.update(antyvirus)
         return antyviruses_found

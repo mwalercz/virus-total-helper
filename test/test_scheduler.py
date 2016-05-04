@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.scheduler import Scheduler
+from server.scheduler import Scheduler
 
 
 def simple_function():

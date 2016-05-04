@@ -2,7 +2,7 @@ import logging
 import socket
 from threading import Thread
 
-from app.clienthandler import ClientHandler
+from server.clienthandler import ClientHandler
 
 
 class Receptionist(Thread):

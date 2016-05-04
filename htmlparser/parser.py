@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 
-from app.parsing.lexer import Lexer
+from .lexer import Lexer
 
 
 class Tag:
@@ -112,7 +112,7 @@ class Parser:
 
     def p_error(self, p):
         if p:
-             print("Syntax error in input!", p.type + " ", p.value)
+             # print("Syntax error in input!", p.type + " ", p.value)
              p.lexer.skip(1)
              self.parser.errok()
         else:
