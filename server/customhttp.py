@@ -20,7 +20,6 @@ class HTTPRequest:
         self.headers = {}
         self._parse_request(raw_data)
 
-
     def json(self):
         content_type = "Content-Type"
         if content_type in self.headers:
@@ -90,8 +89,6 @@ class HTTPRequest:
             return last_chars == '\r\n\r\n'
         else:
             return False
-
-
 
 
 # zwracamy tylko JSONY więc content-type jest już zdefiniowany

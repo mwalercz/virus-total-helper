@@ -2,8 +2,8 @@ import logging
 import threading
 import signal
 
+import urls
 from . import config
-from .urls import URLS
 from .scheduler import Scheduler
 from .dispatcher import Dispatcher
 from .receptionist import Receptionist

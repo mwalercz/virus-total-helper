@@ -57,7 +57,11 @@ class TestParserFinder(TestCase):
         element_list = self.parser.parse(data)
         finder = Finder(element_list)
         real_antyviruses = finder._find_antyviruses_info()
-        expected_antyviruses = {'Zoner': 'File not detected', 'nProtect': 'File not detected'}
+        expected_antyviruses = {'Zoner': {"Result": 'File not detected',
+                                          "Update": "20160417"},
+                                'nProtect': {"Result": 'File not detected',
+                                             "Update": "20160415"}
+                                }
         self.assertEqual(real_antyviruses, expected_antyviruses)
 
     def test_first_page_info(self):
@@ -122,6 +126,9 @@ class TestParserFinder(TestCase):
                          'Detection ratio': '0 / 57',
                          'File name': 'zadanie.pdf',
                          'Analysis date': '2016-04-17 09:21:07 UTC ( 5 days, 4 hours ago )',
-                         'Antyviruses': {'Yandex': 'File not detected', 'Zillya': 'File not detected'}}
+                         'Antyviruses': {'Yandex': {"Result": "File not detected", "Update": "20160416"},
+                                         'Zillya': {"Result": "File not detected", "Update": "20160416"}
+                                         }
+                         }
 
         self.assertEqual(real_info, expected_info)

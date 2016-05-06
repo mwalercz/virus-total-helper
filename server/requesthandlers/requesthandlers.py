@@ -15,7 +15,8 @@ def virus_info_handler(request, response):
         element_list = parser.parse(file_content)
         finder = Finder(element_list)
 
-        response.body = finder.find_attributes_from_list(attributes) if attributes else finder.find_first_page_attributes()
+        response.body = finder.find_attributes_from_list(
+            attributes) if attributes else finder.find_first_page_attributes()
 
     except NoSuchFile as error:
         logging(str(error))

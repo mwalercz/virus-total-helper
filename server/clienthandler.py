@@ -3,7 +3,7 @@ from _socket import SHUT_RDWR
 from threading import Thread
 
 from server.dispatcher import NoSuchUrl
-from server.http import HTTPRequest, HTTPResponse, MethodNotSupported
+from server.customhttp import HTTPRequest, HTTPResponse, MethodNotSupported
 
 
 class SomethingWentWrong(Exception):

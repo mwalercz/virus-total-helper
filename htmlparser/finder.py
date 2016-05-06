@@ -2,9 +2,9 @@ import collections
 
 from .parser import Content, Tag
 
+
 class NoSuchAttribute(Exception):
     pass
-
 
 
 class Finder:
@@ -46,31 +46,29 @@ class Finder:
         antyviruses_found = self._find_green_antyviruses_info(antyviruses_found)
         return antyviruses_found
 
-    def _next_green_antyvirus(self):
-        antyvirusTag = Tag(tagname='td', attributes={'class': 'ltr text-green'})
-        for i, element in enumerate(self.element_list):
-            if antyvirusTag == element:
-                yield i
-        return None
 
     def _find_green_antyviruses_info(self, antyviruses_found):
-        for index in self._next_green_antyvirus():
-            antyvirus = {self.element_list[index - 2].content:
-                             self.element_list[index + 1].attributes['title']}
-
+        for index in self._next_antyvirus({'class': 'ltr text-green'}):
+            antyvirus = {self.element_list[index - 2].content: {
+                "Result": self.element_list[index + 1].attributes['title'],
+                "Update": self.element_list[index + 5].content}
+            }
             antyviruses_found.update(antyvirus)
         return antyviruses_found
 
-    def _next_red_antyvirus(self):
-        antyvirusTag = Tag(tagname='td', attributes={'class': 'ltr text-red'})
+    def _find_red_antyviruses_info(self, antyviruses_found):
+        for index in self._next_antyvirus({'class': 'ltr text-red'}):
+            antyvirus = {self.element_list[index - 2].content: {
+                "Result": self.element_list[index + 1].content,
+                "Update": self.element_list[index + 4].content}
+            }
+            antyviruses_found.update(antyvirus)
+        return antyviruses_found
+
+
+    def _next_antyvirus(self, attributes):
+        antyvirusTag = Tag(tagname='td', attributes=attributes)
         for i, element in enumerate(self.element_list):
             if antyvirusTag == element:
                 yield i
         return None
-
-    def _find_red_antyviruses_info(self, antyviruses_found):
-        for index in self._next_red_antyvirus():
-            antyvirus = {self.element_list[index - 2].content:
-                             self.element_list[index + 1].content}
-            antyviruses_found.update(antyvirus)
-        return antyviruses_found

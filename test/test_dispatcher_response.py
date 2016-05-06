@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from server.dispatcher import Dispatcher, ArgumentLookupError, NoSuchUrl
-from server.http import HTTPResponse
+from server.customhttp import HTTPResponse
 
 
 def request_handler(request, response):
