@@ -1,7 +1,9 @@
 # sha256 as int, returns string
 # raises exception NoSuchFile if it doesn't find file on filesystem
 def read_from_file(sha256):
-    raise NotImplemented
+    #raise NotImplemented
+    temp = "read from file %d", sha256
+    return temp
 
 
 # sha256 as int, data as string

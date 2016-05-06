@@ -1,10 +1,6 @@
-
-log_filename = '../vt.log'
-
-html_dir = '/html/'
-
-port = 5005
-
-connection_no = 5
-
-hostname = 'localhost'
+log_filename = ""
+html_dir = ""
+port = ""
+connection_no = ""
+hostname = ""
+# czy może powinny być jakieś domyślne wartości?
