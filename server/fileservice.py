@@ -12,5 +12,4 @@ def write_to_file(sha256, data):
 
 
 class NoSuchFile(Exception):
-    def __init__(self, sha256):
-        self.sha256 = sha256
+    pass

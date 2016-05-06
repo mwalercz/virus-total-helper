@@ -6,6 +6,10 @@ class MethodNotSupported(Exception):
     pass
 
 
+class WrongHeader(Exception):
+    pass
+
+
 class HTTPRequest:
     def __init__(self, raw_data):
         self.raw_data = raw_data
@@ -15,6 +19,27 @@ class HTTPRequest:
         self.protocol = None
         self.headers = {}
         self._parse_request(raw_data)
+
+
+    def json(self):
+        content_type = "Content-Type"
+        if content_type in self.headers:
+            if "application/json" in self.headers[content_type]:
+                return json.loads(self.body)
+            else:
+                raise WrongHeader("Content-Type doesn't include application/json")
+        else:
+            raise WrongHeader("No Content-Type in headers")
+
+    def binary(self):
+        content_type = "Content-Type"
+        if content_type in self.headers:
+            if "application/octet-stream" in self.headers[content_type]:
+                return self.body.encode("utf-8")
+            else:
+                raise WrongHeader("Content-Type doesn't include application/octet-stream")
+        else:
+            raise WrongHeader("No Content-Type in headers")
 
     def _parse_request(self, raw_data):
         first_line, sep, rest = self.raw_data.partition('\r\n')
@@ -66,25 +91,7 @@ class HTTPRequest:
         else:
             return False
 
-    def json(self):
-        content_type = "Content-Type"
-        if content_type in self.headers:
-            if "application/json" in self.headers[content_type]:
-                return json.loads(self.body)
-            else:
-                return None
-        else:
-            return None
 
-    def binary(self):
-        content_type = "Content-Type"
-        if content_type in self.headers:
-            if "application/octet-stream" in self.headers[content_type]:
-                return self.body.encode("utf-8")
-            else:
-                return None
-        else:
-            return None
 
 
 # zwracamy tylko JSONY więc content-type jest już zdefiniowany
