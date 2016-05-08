@@ -2,7 +2,7 @@ import logging
 import threading
 import signal
 
-import urls
+from . import urls
 from . import config
 from .scheduler import Scheduler
 from .dispatcher import Dispatcher

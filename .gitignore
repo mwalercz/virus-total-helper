@@ -42,3 +42,7 @@ docs/_build
 # Cookiecutter
 output/
 *.ini~
+#po co trzymac sqlite w gicie?
+jobs.sqlite
+#testowe pliki html
+test/html
