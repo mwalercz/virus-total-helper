@@ -4,7 +4,8 @@ import requests
 
 from htmlparser.finder import Finder
 from htmlparser.parser import Parser
-from server.fileservice import read_from_file, write_to_file, NoSuchFile
+from server.fileservice import read_from_file, NoSuchFile
+from server.requesthandlers import vt_request
 
 
 def virus_info_handler(request, response):
@@ -33,18 +34,17 @@ def single_handler(request, response, scheduler):
     # obliczamy sha256 dla pliku binarnego
     binary = request.binary()
     sha256 = hashlib.sha256(binary)
+    sha = sha256.hexdigest()
 
-    # dajemy odpowiedz
+    #tworzymy response
     response.status = "202 Accepted"
     response.body = {
-        "sha256": sha256,
+        "sha256": sha,
         "message": "Task has been accepted, please ask us again about that file in some time using method /api/virus"
     }
-    url = 'https://www.virustotal.com/en/file/' + (sha256) + '/analysis/'
-    responseVT = requests.post(url)
 
-    # zapisanie do pliku
-    write_to_file(sha256, responseVT)
+    # zapytanie do VT
+    scheduler.add_job(lambda: vt_request.request_to_VT(sha256))
 
-    # zwracamy response
     return response
+
