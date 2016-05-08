@@ -4,6 +4,7 @@ import requests
 
 from htmlparser.finder import Finder
 from htmlparser.parser import Parser
+from server.customhttp import WrongHeader
 from server.fileservice import read_from_file, NoSuchFile
 from server.requesthandlers import vt_request
 
@@ -28,23 +29,34 @@ def virus_info_handler(request, response):
 
     return response
 
-#Marek
-#pojdeyncze zapytanie do VT
+
+# Marek
+# pojdeyncze zapytanie do VT
+# TODO: obsluzyc wyjatek rzucany prze request.binary()
 def single_handler(request, response, scheduler):
     # obliczamy sha256 dla pliku binarnego
-    binary = request.binary()
+    try:
+        binary = request.binary()
+    except WrongHeader:
+        logging.error("Wrong Header! Expected: octet-stream")
+        response.status = "415 Unsupported Media Type"
+        response.body = {
+            "error": "Please use content_type: application/octet-stream"
+        }
+        return response
+
+
     sha256 = hashlib.sha256(binary)
     sha = sha256.hexdigest()
 
-    #tworzymy response
+    # tworzymy response
     response.status = "202 Accepted"
     response.body = {
         "sha256": sha,
         "message": "Task has been accepted, please ask us again about that file in some time using method /api/virus"
     }
 
-    # zapytanie do VT
-    scheduler.add_job(lambda: vt_request.request_to_VT(sha256))
+    # pojedyncze zapytanie do VT
+    scheduler.add_job(lambda: vt_request.request_to_VT(sha))
 
     return response
-
