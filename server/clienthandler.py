@@ -36,7 +36,6 @@ class ClientHandler(Thread):
                 logging.error("ConnectionHandler exploded")
                 response = HTTPResponse()
                 response.status = "500 Server Internal Error"
-
             self._write_to_socket(response)
 
     def _get_request(self):

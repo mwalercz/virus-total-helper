@@ -40,6 +40,14 @@ class HTTPRequest:
         else:
             raise WrongHeader("No Content-Type in headers")
 
+    def is_finished(self):
+        if self.command == "GET":
+            return self._is_get_finished()
+        elif self.command == "POST":
+            return self._is_post_finished()
+        else:
+            raise MethodNotSupported
+
     def _parse_request(self, raw_data):
         first_line, sep, rest = self.raw_data.partition('\r\n')
         self.command, self.path, self.protocol = self._split_first_line(first_line)
@@ -69,13 +77,7 @@ class HTTPRequest:
             self.headers.update({key: value})
             self._parse_headers(rest)
 
-    def is_finished(self):
-        if self.command == "GET":
-            return self._is_get_finished()
-        elif self.command == "POST":
-            return self._is_post_finished()
-        else:
-            raise MethodNotSupported
+
 
     def _is_post_finished(self):
         content_length = int(self.headers['Content-Length'])
