@@ -1,4 +1,4 @@
-# sha256 as int, returns string
+# sha256 as string, returns string
 # raises exception NoSuchFile if it doesn't find file on filesystem
 import os
 
@@ -6,7 +6,8 @@ import server
 from server import config
 from threading import Lock
 
-class Fileserver():
+
+class Fileserver:
     _locks_lock = Lock()
     _locks = {}
 
@@ -38,11 +39,9 @@ class Fileserver():
         if not sha256 in Fileserver._locks:
             Fileserver._locks_lock.acquire()
             if not sha256 in Fileserver._locks:
-                Fileserver._locks[sha256] = Lock();
+                Fileserver._locks[sha256] = Lock()
             Fileserver._locks_lock.release()
         Fileserver._locks[sha256].acquire()
-
-
 
     @staticmethod
     def _unlock(sha256):
@@ -56,7 +55,7 @@ def read_from_file(sha256):
         raise
 
 
-# sha256 as int, data as string
+# sha256 as string, data as string
 def write_to_file(sha256, data):
     return Fileserver.write(sha256, data)
 
