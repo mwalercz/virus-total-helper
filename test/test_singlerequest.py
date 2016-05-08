@@ -36,3 +36,11 @@ class TestSingleRequest(TestCase):
         expectedShaObcjet = hashlib.sha256(payload)
         expectedSha = expectedShaObcjet.hexdigest()
         self.assertEqual(responseSha256, expectedSha)
+
+    def test_header(self):
+        headers = {"Content-Type": "application/json"}
+        payload = b'sprawdzamy_pojedyncze_zapytanie'
+        response = requests.post('http://localhost:5005/api/singleVirusTotal',
+                                 headers=headers,
+                                 data=payload)
+        self.assertEqual(415, response.status_code)
