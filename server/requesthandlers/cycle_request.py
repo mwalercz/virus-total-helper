@@ -29,7 +29,9 @@ def cycle_handler(request, response, scheduler):
         return response
 
     try:
-        scheduler.add_job(func=vt_request.request_to_vt, arg=sha256, trigger=cron, id=sha256, replace_existing=True)
+        scheduler.add_job(func=lambda : vt_request.request_to_vt(sha256),
+                          trigger='cron',id=sha256,
+                          replace_existing=True, **cron)
     except Exception as e:
         print ('type is:', e.__class__.__name__)
         print_exc()
