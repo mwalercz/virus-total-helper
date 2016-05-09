@@ -26,8 +26,7 @@ class TestFileService(unittest.TestCase):
         test_string = "Omijając kwieciste ostrowy burzanu"
         test_sha256 = "1234"
         write_to_file(test_sha256,test_string)
-        tup = read_from_file(test_sha256)
-        self.assertEqual(tup[0], test_string)
-        self.assertEqual(tup[1], test_sha256)
+        file_content = read_from_file(test_sha256)
+        self.assertEqual(file_content, test_string)
 
 

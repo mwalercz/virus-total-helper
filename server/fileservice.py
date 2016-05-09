@@ -17,7 +17,7 @@ class Fileserver:
         if not os.path.isfile(Fileserver._get_filename(sha256)):
             raise NoSuchFile
         file = open(Fileserver._get_filename(sha256), 'r')
-        temp = file.read(), sha256
+        temp = file.read()
         file.close()
         Fileserver._unlock(sha256)
         return temp
