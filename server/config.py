@@ -1,6 +1,5 @@
 log_filename = ""
 html_dir = ""
-port = ""
-connection_no = ""
+port = 0
+connection_no = 0
 hostname = ""
-# czy może powinny być jakieś domyślne wartości?

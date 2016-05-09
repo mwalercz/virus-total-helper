@@ -32,7 +32,7 @@ def virus_info_handler(request, response):
             response.body = {"error": "Requested virus information is not ready yet, please try again later"}
 
         parser = Parser()
-        element_list = parser.parse(file_content)
+        element_list = parser.parse(file_content[0])
         finder = Finder(element_list)
 
         response.body = finder.find_attributes_from_list(
