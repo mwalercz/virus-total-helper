@@ -1,4 +1,4 @@
-# @author: Marek
+# @author: Marek B
 # pojdeyncze zapytanie do VT
 
 import logging
@@ -18,12 +18,8 @@ def single_handler(request, response, scheduler):
             "error": "Please use content_type: application/octet-stream"
         }
         return response
-
-
     sha = hashlib.sha256(binary)
     sha256 = sha.hexdigest()
-
-    #TODO: sprawdzic czy istnieje plik o zadanym SHA i jesli nie to stworzyc go z zawartoscia "Processing..."
 
     # tworzymy response
     response.status = "202 Accepted"

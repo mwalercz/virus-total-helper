@@ -1,6 +1,5 @@
 from unittest import TestCase
 import requests
-import json
 import hashlib
 from server import App
 
@@ -14,9 +13,7 @@ class TestSingleRequest(TestCase):
     def tearDownClass(cls):
         cls.app.exit_gracefully()
 
-
     def test_status(self):
-        # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json
         headers = {"Content-Type": "application/octet-stream"}
         payload = b'sprawdzamy_pojedyncze_zapytanie'
         response = requests.post('http://localhost:5005/api/singleVirusTotal',

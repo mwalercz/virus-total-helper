@@ -1,3 +1,4 @@
+#author: Marek
 import requests
 from server.fileservice import write_to_file
 
@@ -8,7 +9,6 @@ def request_to_vt(sha256):
     empty_file = b''
 
     if(data == empty_file):
-        #TODO: sprawdzic czy nie nadpisujemy istniejacego pliku (Ale czy to ma sens?)
-        write_to_file(sha256, "404 Not Found")
+        return
     else:
         write_to_file(sha256, data)
