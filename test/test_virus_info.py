@@ -23,31 +23,27 @@ class TestVirusInfo(TestCase):
         headers = {'Content-Type': 'application/json'}
         headers400 = {'Content-Type': 'application/octet-stream'}
 
-        payload200a = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
+        payload1 = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
                     'attributes': ['MIMEType', 'XMPToolkit', 'Producer']}
-        payload200b = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1'}
-        payload400 = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
-                    'attributes': ['MIMEType', 'XMPToolkit', 'Producer']}
+        payload2 = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1'}
         payload404 = {'SHA256': 'nie_istnieje131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
-                    'attributes': ['MIMEType', 'XMPToolkit', 'Producer']}
-        payload500 = {'SHA256': 'pusty45d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
                     'attributes': ['MIMEType', 'XMPToolkit', 'Producer']}
 
         response200a = requests.post('http://localhost:5005/api/virus',
                                     headers=headers,
-                                    data=json.dumps(payload200a))
+                                    data=json.dumps(payload1))
         response200b = requests.post('http://localhost:5005/api/virus',
                                     headers=headers,
-                                    data=json.dumps(payload200b))
+                                    data=json.dumps(payload2))
         response400 = requests.post('http://localhost:5005/api/virus',
                                     headers=headers400,
-                                    data=json.dumps(payload400))
+                                    data=json.dumps(payload1))
         response404 = requests.post('http://localhost:5005/api/virus',
                                     headers=headers,
                                     data=json.dumps(payload404))
         response500 = requests.post('http://localhost:5005/api/virus',
                                     headers=headers,
-                                    data=json.dumps(payload500))
+                                    json=json.dumps(payload2))
 
         self.assertEqual(200, response200a.status_code)
         self.assertEqual(200, response200b.status_code)
