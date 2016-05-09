@@ -18,9 +18,8 @@ class TestVirusInfo(TestCase):
     def tearDownClass(cls):
         cls.app.exit_gracefully()
 
-
     def test_simple_attributes(self):
-        payload = {'SHA256': '70ed0f6db9c50f9d05f3497386dba768f5efef59b6709c682bbc1951a93c47bf',
+        payload = {'SHA256': 'b69e745d27eb131de6703ec58c4e67bc8cb8a63c0ed45ec440f4e0061f71b7d1',
                    'attributes': ['MIMEType', 'XMPToolkit', 'Producer']}
         headers = {'Content-Type': 'application/json'}
 

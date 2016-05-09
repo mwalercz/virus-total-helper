@@ -17,7 +17,7 @@ def virus_info_handler(request, response):
         response.status = "400 Bad Request"
         response.body = {"error": "Wrong request header"}
 
-    sha = param["sha256"]
+    sha = param["SHA256"]
     attributes = param["attributes"]
     try:
         file_content = read_from_file(sha)
