@@ -10,11 +10,27 @@ from server.requesthandlers import vt_request
 
 
 def virus_info_handler(request, response):
-    param = request.json()
-    sha = int(param["sha256"])
+    try:
+        param = request.json()
+    except WrongHeader as error:
+        logging(str(error))
+        response.status = "400 Bad Request"
+        response.body = {"error": "Wrong request header"}
+
+    sha = param["sha256"]
     attributes = param["attributes"]
     try:
         file_content = read_from_file(sha)
+
+        # jeśli puste, 302 err
+        try:
+            if file_content == "":
+                raise EmptyFile
+        except EmptyFile as error:
+            logging(str(error))
+            response.status = "302 Found"
+            response.body = {"error": "Requested virus information is not ready yet, please try again later"}
+
         parser = Parser()
         element_list = parser.parse(file_content)
         finder = Finder(element_list)
@@ -24,11 +40,14 @@ def virus_info_handler(request, response):
 
     except NoSuchFile as error:
         logging(str(error))
-        response.status = "404 Not found"
+        response.status = "404 Not Found"
         response.body = {"error": "Invalid sha256"}
 
     return response
 
+
+class EmptyFile(Exception):
+    pass
 
 # Marek
 # pojdeyncze zapytanie do VT
