@@ -13,6 +13,7 @@ def virus_info_handler(request, response):
         logging.error(str(error))
         response.status = "400 Bad Request"
         response.body = {"error": "Wrong request header"}
+        return response
 
     sha = param["SHA256"]
     if "attributes" in param: attributes = param["attributes"]
