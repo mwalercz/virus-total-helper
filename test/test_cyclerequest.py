@@ -15,6 +15,14 @@ class TestCycleRequest(TestCase):
     def tearDownClass(cls):
         cls.app.exit_gracefully()
 
+    def test_header(self):
+        headers = {"Content-Type": "application/json"}
+        payload = b'sprawdzamy_pojedyncze_zapytanie2'
+        response = requests.post('http://localhost:5005/api/singleVirusTotal',
+                                 headers=headers,
+                                 data=payload)
+        self.assertEqual(415, response.status_code)
+
     def test_status(self):
         # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json
         headers = {"Content-Type": "application/json"}
