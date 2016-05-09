@@ -4,7 +4,6 @@ from htmlparser.finder import Finder
 from htmlparser.parser import Parser
 from server.customhttp import WrongHeader
 from server.fileservice import read_from_file, NoSuchFile
-from server.requesthandlers import vt_request
 
 
 def virus_info_handler(request, response):
