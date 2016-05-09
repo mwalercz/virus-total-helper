@@ -28,7 +28,6 @@ class App:
                             format='%(asctime)s %(levelname)s: %(name)s  %(message)s')
 
     def _initialize_config(self):
-        ######################################################### z użyciem config parsera
         cfg = configparser.ConfigParser()
         cfg.read('../config.ini')
         config.hostname = cfg['connection']['Host']
@@ -37,22 +36,6 @@ class App:
         config.html_dir = cfg['paths']['Html']
         config.log_filename = cfg['paths']['Logs']
         config.absolute_path = cfg['paths']['Absolute']
-        ######################################################### stara wersja
-        #config_file = open('../config.ini')
-        #config_dict = {}
-        #config_line = config_file.readline()
-        #config_word = []
-        #while config_line != "":
-        #    if config_line != "\n":
-        #        config_word = config_line.split(" = ")
-        #        config_dict[config_word[0]] = config_word[1].strip(""" '"\n""")
-        #    config_line = config_file.readline()
-
-        #config.log_filename = config_dict["log_filename"]
-        #config.html_dir = config_dict["html_dir"]
-        #config.port = int(config_dict["port"])
-        #config.connection_no = int(config_dict["connection_no"])
-        #config.hostname = config_dict["hostname"]
 
     def _initialize_objects(self):
         self.scheduler = Scheduler()
