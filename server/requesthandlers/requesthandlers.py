@@ -57,6 +57,6 @@ def single_handler(request, response, scheduler):
     }
 
     # pojedyncze zapytanie do VT
-    scheduler.add_job(lambda: vt_request.request_to_VT(sha))
+    scheduler.add_job(lambda: vt_request.request_to_vt(sha))
 
     return response

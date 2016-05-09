@@ -39,7 +39,7 @@ class TestSingleRequest(TestCase):
 
     def test_header(self):
         headers = {"Content-Type": "application/json"}
-        payload = b'sprawdzamy_pojedyncze_zapytanie'
+        payload = b'sprawdzamy_pojedyncze_zapytanie2'
         response = requests.post('http://localhost:5005/api/singleVirusTotal',
                                  headers=headers,
                                  data=payload)
