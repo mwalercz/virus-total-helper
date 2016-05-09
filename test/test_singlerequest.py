@@ -3,6 +3,7 @@ import requests
 import hashlib
 from server import App
 
+
 class TestSingleRequest(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -20,7 +21,7 @@ class TestSingleRequest(TestCase):
                                  headers=headers,
                                  data=payload)
         # dostalismy z powrotem jsona bo nasz serwer umie tylko wysylac jsony
-        self.assertEqual( 202, response.status_code)
+        self.assertEqual(202, response.status_code)
 
     def test_sha256(self):
         headers = {"Content-Type": "application/octet-stream"}

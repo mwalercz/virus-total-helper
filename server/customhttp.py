@@ -24,7 +24,7 @@ class HTTPRequest:
         content_type = "Content-Type"
         if content_type in self.headers:
             if "application/json" in self.headers[content_type]:
-                return json.loads(self.body)
+                return json.loads(self.body.decode("utf-8"))
             else:
                 raise WrongHeader("Content-Type doesn't include application/json")
         else:
@@ -34,7 +34,7 @@ class HTTPRequest:
         content_type = "Content-Type"
         if content_type in self.headers:
             if "application/octet-stream" in self.headers[content_type]:
-                return self.body.encode("utf-8")
+                return self.body
             else:
                 raise WrongHeader("Content-Type doesn't include application/octet-stream")
         else:
@@ -49,15 +49,19 @@ class HTTPRequest:
             raise MethodNotSupported
 
     def _parse_request(self, raw_data):
-        first_line, sep, rest = self.raw_data.partition('\r\n')
+        raw_beginning, self.body = self._split_headers_and_body(raw_data)
+        beginning = raw_beginning.decode("utf-8")
+        first_line, sep, rest = beginning.partition('\r\n')
         self.command, self.path, self.protocol = self._split_first_line(first_line)
         host, sep, rest = rest.partition('\r\n')
-        raw_headers, self.body = self._split_headers_and_body(rest)
-        self._parse_headers(raw_headers)
+        self._parse_headers(rest)
 
-    def _split_headers_and_body(self, rest):
-        raw_headers, sep, body = rest.partition('\r\n\r\n')
-        return raw_headers, body
+    def _split_headers_and_body(self, raw_data):
+        index = raw_data.find(b'\r\n\r\n')
+        raw_beginning = raw_data[:index]
+        body = raw_data[index+4:]
+        return raw_beginning, body
+
 
     def _split_first_line(self, first_line):
         command, sep, rest, = first_line.partition(' ')

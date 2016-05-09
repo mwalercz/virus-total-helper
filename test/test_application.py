@@ -16,14 +16,15 @@ class TestApplication(TestCase):
     def tearDownClass(cls):
         cls.app.exit_gracefully()
 
-    def test_default_request(self):
-        response = requests.get('http://localhost:5005/test/default')
-        self.assertEqual(response.text, '{"greetings": "hello world"}')
-
-    # sprawdza czy można dwa razy się połączyć do naszego serwera
-    def test_default_request2(self):
-        response = requests.get('http://localhost:5005/test/default')
-        self.assertEqual(response.text, '{"greetings": "hello world"}')
+    # gadamy tylko postami
+    # def test_default_request(self):
+    #     response = requests.get('http://localhost:5005/test/default')
+    #     self.assertEqual(response.text, '{"greetings": "hello world"}')
+    #
+    # # sprawdza czy można dwa razy się połączyć do naszego serwera
+    # def test_default_request2(self):
+    #     response = requests.get('http://localhost:5005/test/default')
+    #     self.assertEqual(response.text, '{"greetings": "hello world"}')
 
     def test_scheduler_request(self):
         # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json

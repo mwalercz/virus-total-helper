@@ -32,6 +32,10 @@ class ClientHandler(Thread):
                 response = HTTPResponse()
                 response.body = {"error": "There is no method for url: " + noSuchUrl.url}
                 response.status = "404 Not found"
+            except UnicodeError as error:
+                logging.error("Decoding error" + error.reason + " " +
+                              error.object[error.start:error.end])
+
             except:
                 logging.error("ConnectionHandler exploded")
                 response = HTTPResponse()
@@ -56,7 +60,7 @@ class ClientHandler(Thread):
         data = self.client_socket.recv(4096)
         data_array.append(data)
         binary_data = b''.join(data_array)
-        return binary_data.decode(encoding='utf-8')
+        return binary_data
 
     def _write_to_socket(self, response):
         binary_response = str(response).encode('utf-8')
