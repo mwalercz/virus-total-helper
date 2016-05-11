@@ -1,7 +1,7 @@
 import os
 import unittest
 from server import App
-from server.fileservice import Fileserver, NoSuchFile
+from server.fileservice import Fileservice, NoSuchFile
 
 
 class TestFileService(unittest.TestCase):
@@ -16,19 +16,22 @@ class TestFileService(unittest.TestCase):
 
     def test_read_wrong_file(self):
         test_sha265 = "4321"
-        path = Fileserver._get_filename(test_sha265)
+        path = Fileservice._get_filename(test_sha265)
         if os.path.isfile(path):
             os.remove(path)
         with self.assertRaises(NoSuchFile):
-            with Fileserver.File(test_sha265) as file:
+            with Fileservice.File(test_sha265) as file:
                 file.read()
 
     def test_read_write(self):
         test_string = "Omijając kwieciste ostrowy burzanu"
         test_sha256 = "1234"
-        with Fileserver.File(test_sha256) as file:
+        with Fileservice.File(test_sha256) as file:
             file.write(test_string)
             file_content = file.read()
         self.assertEqual(file_content, test_string)
 
-
+    def test_exists(self):
+        with Fileservice.File("45") as file:
+            if file.exists():
+                self.assertTrue(False, "nigdy nie powinnismy tutaj wejsc")

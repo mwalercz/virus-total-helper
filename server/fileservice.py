@@ -4,6 +4,7 @@ import server
 from server import config
 from threading import Lock
 
+
 ### Ex:
 # with Fileserver.File(sha256) as file:
 #     string = file.read()
@@ -12,7 +13,7 @@ from threading import Lock
 # tzn. uzyskanie obiektu file powoduje zajęcie go
 # Po wyjściu z zasięgu with plik jest odblokowywany
 
-class Fileserver:
+class Fileservice:
     _locks_lock = Lock()
     _locks = {}
 
@@ -21,30 +22,37 @@ class Fileserver:
             self.sha256 = sha265
 
         def __enter__(self):
-            Fileserver._lock(self.sha256)
+            Fileservice._lock(self.sha256)
             return self
 
         def __exit__(self, exc_type, exc_val, exc_tb):
-            Fileserver._unlock(self.sha256)
+            Fileservice._unlock(self.sha256)
 
         def read(self):
-            return Fileserver._read(self.sha256)
+            return Fileservice._read(self.sha256)
 
         def write(self, data):
-            return Fileserver._write(self.sha256, data)
+            return Fileservice._write(self.sha256, data)
+
+        def exists(self):
+            return Fileservice._exists(self.sha256)
+
+    @staticmethod
+    def _exists(sha256):
+        return os.path.isfile(Fileservice._get_filename(sha256))
 
     @staticmethod
     def _read(sha256):
-        if not os.path.isfile(Fileserver._get_filename(sha256)):
+        if not Fileservice._exists(sha256):
             raise NoSuchFile
-        file = open(Fileserver._get_filename(sha256), 'r')
+        file = open(Fileservice._get_filename(sha256), 'r')
         temp = file.read()
         file.close()
         return temp
 
     @staticmethod
     def _write(sha256, data):
-        file = open(Fileserver._get_filename(sha256), 'w')
+        file = open(Fileservice._get_filename(sha256), 'w')
         file.write(data)
         file.close()
 
@@ -54,29 +62,27 @@ class Fileserver:
 
     @staticmethod
     def _lock(sha256):
-        if not sha256 in Fileserver._locks:
-            Fileserver._locks_lock.acquire()
-            if not sha256 in Fileserver._locks:
-                Fileserver._locks[sha256] = Lock()
-            Fileserver._locks_lock.release()
-        Fileserver._locks[sha256].acquire()
+        if not sha256 in Fileservice._locks:
+            Fileservice._locks_lock.acquire()
+            if not sha256 in Fileservice._locks:
+                Fileservice._locks[sha256] = Lock()
+            Fileservice._locks_lock.release()
+        Fileservice._locks[sha256].acquire()
 
     @staticmethod
     def _unlock(sha256):
-        Fileserver._locks[sha256].release()
+        Fileservice._locks[sha256].release()
 
 
 class NoSuchFile(Exception):
     pass
 
+
 #### Jak to mówią: deprecated, do not use
 def read_from_file(sha256):
-    raise NotImplemented
+    raise NotImplementedError
 
 
 # sha256 as string, data as string
 def write_to_file(sha256, data):
-    raise NotImplemented
-
-
-
+    raise NotImplementedError
