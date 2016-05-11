@@ -31,12 +31,12 @@ class Standalone:
 
     def read_html(self):
         with self.html_path.open() as html_file:
-            html_string = html_file.read()
+            html_string = html_file._read()
         return html_string
 
     def read_json(self):
         with self.json_path.open() as json_file:
-            json_string = json_file.read()
+            json_string = json_file._read()
         json_list = json.loads(json_string)
         if isinstance(json_list, list):
              return json_list
@@ -47,7 +47,7 @@ class Standalone:
         results_path = self.html_path.parent / 'result.json'
         result_string = json.dumps(elements_found, indent=4)
         with results_path.open('w+') as results_file:
-            results_file.write(result_string)
+            results_file._write(result_string)
         print(result_string)
 
 
