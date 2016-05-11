@@ -7,7 +7,6 @@
 import logging
 from traceback import print_exc
 
-from server.customhttp import WrongHeader, NotJsonError
 from server.requesthandlers import vt_request
 from apscheduler.events import SchedulerEvent
 

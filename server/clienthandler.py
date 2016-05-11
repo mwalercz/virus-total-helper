@@ -31,12 +31,13 @@ class ClientHandler(Thread):
                 logging.info("There is no method for url: " + noSuchUrl.url)
                 response = HTTPResponse()
                 response.body = {"error": "There is no method for url: " + noSuchUrl.url}
-                response.status = "404 Not found"
+                response.status = "404 Not Found"
             except UnicodeError as error:
                 logging.error("Decoding error" + error.reason + " " +
                               error.object[error.start:error.end])
-
-            except:
+                response.body = {"error": "Bad encoding, use UTF-8"}
+                response.status = "400 Bad Request"
+            except Exception:
                 logging.error("ConnectionHandler exploded")
                 response = HTTPResponse()
                 response.status = "500 Server Internal Error"

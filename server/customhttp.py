@@ -1,12 +1,7 @@
 import json
-import re
 
 
 class MethodNotSupported(Exception):
-    pass
-
-
-class WrongHeader(Exception):
     pass
 
 
@@ -27,7 +22,7 @@ class HTTPRequest:
     def json(self):
         try:
             return json.loads(self.body.decode("utf-8"))
-        except ValueError:
+        except Exception:
             raise NotJsonError
 
     def binary(self):

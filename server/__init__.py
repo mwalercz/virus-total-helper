@@ -1,5 +1,6 @@
 import configparser
 import logging
+import os
 import threading
 import signal
 
@@ -12,14 +13,18 @@ from .receptionist import Receptionist
 
 class App:
     def initialize(self):
-        self._initialize_logs()
         self._initialize_config()
+        self._initialize_logs()
         self._initialize_objects()
         self._initialize_signals()
         self._start_receptionist_and_scheduler()
-        self._wait_for_recepcionist_to_finish()
+        # self._wait_for_sigint()
+
+    def handle_sig(self, signum, frame):
+        self.receptionist.stop()
 
     def exit_gracefully(self):
+        # os.kill(os.getpid(), signal.SIGINT)
         self.receptionist.stop()
 
     def _initialize_logs(self):
@@ -47,14 +52,12 @@ class App:
                                          connection_no=config.connection_no)
 
     def _initialize_signals(self):
-        signal.signal(signal.SIGINT, self.exit_gracefully)
-        signal.signal(signal.SIGTERM, self.exit_gracefully)
+        signal.signal(signal.SIGINT, self.handle_sig)
+        signal.signal(signal.SIGTERM, self.handle_sig)
 
     def _start_receptionist_and_scheduler(self):
         self.scheduler.start()
         self.receptionist.start()
 
-    def _wait_for_recepcionist_to_finish(self):
-        for thread in threading.enumerate():
-            if thread.getName() == "Recepcionist":
-                thread.join()
+    def _wait_for_sigint(self):
+        signal.pause()

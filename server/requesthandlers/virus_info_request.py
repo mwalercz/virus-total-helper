@@ -2,8 +2,35 @@ import logging
 
 from htmlparser.finder import Finder
 from htmlparser.parser import Parser
-from server.customhttp import WrongHeader, NotJsonError
-from server.fileservice import read_from_file, NoSuchFile, Fileservice
+from server.customhttp import NotJsonError
+from server.fileservice import NoSuchFile, Fileservice
+
+
+def virus_info_handler(request, response):
+    try:
+        params = request.json()
+    except NotJsonError:
+        logging.info("Given body is not json")
+        response.status = "415 Unsupported Media Type"
+        response.body = {"error": "Given body is not json"}
+        return response
+    try:
+        sha256, attributes = _get_validated_args(params)
+    except InvalidArguments:
+        logging.info("Given arguments are invalid")
+        response.status = "400 Bad Request"
+        response.body = {
+            "error": "Given arguments are invalid. Please provide sha256: string and attributes: [] arguments"
+        }
+        return response
+    try:
+        response.status, response.body = _process_file_and_eventually_parse(sha256, attributes)
+    except NoSuchFile:
+        logging.info("Invalid sha256, we dont have file with sha256: " + sha256)
+        response.status = "404 Not Found"
+        response.body = {"error": "Invalid sha256. We don't have your file."}
+        return response
+    return response
 
 
 class InvalidArguments(Exception):
@@ -42,30 +69,3 @@ def _process_file_and_eventually_parse(sha256, attributes):
             status = "200 OK"
             body = _parse_and_find(file_content, attributes)
     return status, body
-
-
-def virus_info_handler(request, response):
-    try:
-        json = request.json()
-    except NotJsonError:
-        logging.info("Given body is not json")
-        response.status = "415 Unsupported Media Type"
-        response.body = {"error": "Given body is not json"}
-        return response
-    try:
-        sha256, attributes = _get_validated_args(json)
-    except InvalidArguments:
-        logging.info("Given arguments are invalid")
-        response.status = "400 Bad Request"
-        response.body = {
-            "error": "Given arguments are invalid. Please provide sha256: string and attributes: [] arguments"
-        }
-        return response
-    try:
-        response.status, response.body = _process_file_and_eventually_parse(sha256, attributes)
-    except NoSuchFile:
-        logging.info("Invalid sha256, we dont have file with sha256: " + sha256)
-        response.status = "404 Not Found"
-        response.body = {"error": "Invalid sha256. We don't have your file."}
-        return response
-    return response

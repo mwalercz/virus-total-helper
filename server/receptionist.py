@@ -37,11 +37,13 @@ class Receptionist(Thread):
                                                client_socket=client_socket)
                 client_handler.setDaemon(True)
                 client_handler.start()
+            self.server_socket.shutdown(socket.SHUT_RDWR)
 
     # dziwne rozwiazanie ale dziala, laczymy sie z wlasnym socketem (robi to główny wątek) zeby odblokowac accept()
     # należaloby zrobić sekcję krytyczną na ustawianie flagi running i na sprawdzanie tej flagi
     # ale to bardzo malo prawdopodobna sytuacja :)
     def stop(self):
+        sock = socket.socket(socket.AF_INET,
+                             socket.SOCK_STREAM)
+        sock.connect((self.hostname, self.port))
         self.running = False
-        socket.socket(socket.AF_INET,
-                      socket.SOCK_STREAM).connect((self.hostname, self.port))

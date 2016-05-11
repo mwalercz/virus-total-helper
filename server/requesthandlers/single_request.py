@@ -4,7 +4,6 @@
 import hashlib
 import logging
 
-from server.customhttp import WrongHeader
 from server.requesthandlers import vt_request
 
 
