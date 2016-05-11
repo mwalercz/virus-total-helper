@@ -9,15 +9,7 @@ from server.requesthandlers import vt_request
 
 
 def single_handler(request, response, scheduler):
-    try:
-        binary = request.binary()
-    except WrongHeader:
-        logging.error("Wrong Header! Expected: Content-Type: application/octet-stream")
-        response.status = "415 Unsupported Media Type"
-        response.body = {
-            "error": "Please use content_type: application/octet-stream"
-        }
-        return response
+    binary = request.binary()
     # obliczamy sha256 dla pliku binarnego
     sha = hashlib.sha256(binary)
     sha256 = sha.hexdigest()

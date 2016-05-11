@@ -7,22 +7,20 @@
 import logging
 from traceback import print_exc
 
-from server.customhttp import WrongHeader
+from server.customhttp import WrongHeader, NotJsonError
 from server.requesthandlers import vt_request
 from apscheduler.events import SchedulerEvent
 
 
 def cycle_handler(request, response, scheduler):
     # obliczamy sha256 dla pliku binarnego
-
-
     try:
         data = request.json()
-    except WrongHeader:
-        logging.error("Wrong Header! Expected: Content-Type: application/json")
+    except NotJsonError as error:
+        logging.error("Given body is not json")
         response.status = "415 Unsupported Media Type"
         response.body = {
-            "error": "Please use content_type: application/json"
+            "error": "Given body is not json"
         }
         return response
 

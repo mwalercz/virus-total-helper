@@ -32,6 +32,6 @@ class TestFileService(unittest.TestCase):
         self.assertEqual(file_content, test_string)
 
     def test_exists(self):
-        with Fileservice.File("45") as file:
+        with Fileservice.File("file-doesnt-exist") as file:
             if file.exists():
                 self.assertTrue(False, "nigdy nie powinnismy tutaj wejsc")
