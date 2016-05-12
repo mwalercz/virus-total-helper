@@ -29,6 +29,5 @@ def request_to_vt(sha256):
         logging.info("File " + sha256 + ".html is empty")
     else:
         with Fileservice.File(sha256) as file:
-            data = file.read()
             file.write(data)
             logging.info("File: " + sha256 + ".html updated")
