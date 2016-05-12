@@ -2,6 +2,7 @@ from unittest import TestCase
 import requests
 import hashlib
 from server import App
+from server.fileservice import Fileservice
 
 
 class TestSingleRequest(TestCase):
@@ -30,4 +31,3 @@ class TestSingleRequest(TestCase):
         expectedShaObcjet = hashlib.sha256(payload)
         expectedSha = expectedShaObcjet.hexdigest()
         self.assertEqual(responseSha256, expectedSha)
-
