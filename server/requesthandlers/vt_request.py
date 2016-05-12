@@ -4,7 +4,6 @@ import logging
 
 import requests
 from server.fileservice import Fileservice
-from bs4 import BeautifulSoup
 
 
 def request_to_vt(sha256):
@@ -20,12 +19,10 @@ def request_to_vt(sha256):
         logging.error("No internet connection! Couldn't connect with virustotal.com")
         return
     data = responsevt.text
-    soup = BeautifulSoup(data, 'html.parser')
-    mydiv = soup.findAll('h2', {"class" : "alert-heading"})
+    found = file_not_found(data)
 
-    empty_file = ""
     # TODO: sprawdzic czy otrzymany plik jest pusty
-    if mydiv != empty_file:
+    if not found:
         with Fileservice.File(sha256) as file:
             if file.read() == "PROCESSING":
                 file.write("NOT FOUND")
@@ -33,6 +30,9 @@ def request_to_vt(sha256):
     else:
         with Fileservice.File(sha256) as file:
             data = file.read()
-            # print(data)
             file.write(data)
             logging.info("File: " + sha256 + ".html updated")
+
+
+def file_not_found(text):
+    return True
