@@ -4,6 +4,7 @@ import logging
 
 import requests
 from server.fileservice import Fileservice
+from htmlparser import is_not_found_on_vt
 
 
 def request_to_vt(sha256):
@@ -19,9 +20,8 @@ def request_to_vt(sha256):
         logging.error("No internet connection! Couldn't connect with virustotal.com")
         return
     data = responsevt.text
-    found = file_not_found(data)
+    found = is_not_found_on_vt(data)
 
-    # TODO: sprawdzic czy otrzymany plik jest pusty
     if not found:
         with Fileservice.File(sha256) as file:
             if file.read() == "PROCESSING":
@@ -32,7 +32,3 @@ def request_to_vt(sha256):
             data = file.read()
             file.write(data)
             logging.info("File: " + sha256 + ".html updated")
-
-
-def file_not_found(text):
-    return True
