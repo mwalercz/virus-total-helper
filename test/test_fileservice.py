@@ -35,3 +35,10 @@ class TestFileService(unittest.TestCase):
         with Fileservice.File("file-doesnt-exist") as file:
             if file.exists():
                 self.assertTrue(False, "nigdy nie powinnismy tutaj wejsc")
+
+    def test_remove(self):
+        with Fileservice.File("remove") as file:
+            file.write("remove it!")
+            self.assertTrue(file.exists())
+            file.remove()
+            self.assertFalse(file.exists())

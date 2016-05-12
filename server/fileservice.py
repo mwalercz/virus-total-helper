@@ -37,6 +37,9 @@ class Fileservice:
         def exists(self):
             return Fileservice._exists(self.sha256)
 
+        def remove(self):
+            return Fileservice._remove(self.sha256)
+
     @staticmethod
     def _exists(sha256):
         return os.path.isfile(Fileservice._get_filename(sha256))
@@ -72,6 +75,10 @@ class Fileservice:
     @staticmethod
     def _unlock(sha256):
         Fileservice._locks[sha256].release()
+
+    @staticmethod
+    def _remove(sha256):
+        os.remove(Fileservice._get_filename(sha256))
 
 
 class NoSuchFile(Exception):

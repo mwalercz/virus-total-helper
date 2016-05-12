@@ -17,10 +17,7 @@ def single_handler(request, response, scheduler):
     sha256 = sha.hexdigest()
 
     #sprawdzamy czy plik istnieje
-    with Fileservice.File(sha256) as file:
-        if not file.exists():
-            file.write("PROCESSING")
-            logging.info("File " + sha256 + ".html created.")
+    create_processingg_file(sha256)
 
     # tworzymy response
     response.status = "202 Accepted"
@@ -31,3 +28,9 @@ def single_handler(request, response, scheduler):
     # pojedyncze zapytanie do VT
     scheduler.add_job(lambda: vt_request.request_to_vt(sha256))
     return response
+
+def create_processingg_file(sha256):
+    with Fileservice.File(sha256) as file:
+        if not file.exists():
+            file.write("PROCESSING")
+            logging.info("File " + sha256 + ".html created.")

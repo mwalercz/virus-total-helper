@@ -3,6 +3,7 @@ import requests
 import hashlib
 from server import App
 from server.fileservice import Fileservice
+from server.requesthandlers.single_request import create_processingg_file
 
 
 class TestSingleRequest(TestCase):
@@ -31,3 +32,11 @@ class TestSingleRequest(TestCase):
         expectedShaObcjet = hashlib.sha256(payload)
         expectedSha = expectedShaObcjet.hexdigest()
         self.assertEqual(responseSha256, expectedSha)
+
+    def test_processing_fiel(self):
+        create_processingg_file("processing")
+        with Fileservice.File("processing") as file:
+            file_content = file.read()
+            self.assertEqual(file_content, "PROCESSING")
+            file.write("It shouldn't exist")
+            file.remove()
