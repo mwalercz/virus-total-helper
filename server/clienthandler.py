@@ -27,14 +27,15 @@ class ClientHandler(Thread):
             try:
                 request = self._get_request()
                 response = self.dispatcher.dispatch(request)
-            except NoSuchUrl as noSuchUrl:
-                logging.info("There is no method for url: " + noSuchUrl.url)
+            except NoSuchUrl as error:
+                logging.info("There is no method for url: " + error.url)
                 response = HTTPResponse()
-                response.body = {"error": "There is no method for url: " + noSuchUrl.url}
+                response.body = {"error": "There is no method for url: " + error.url}
                 response.status = "404 Not Found"
             except UnicodeError as error:
                 logging.error("Decoding error" + error.reason + " " +
                               error.object[error.start:error.end])
+                response = HTTPResponse()
                 response.body = {"error": "Bad encoding, use UTF-8"}
                 response.status = "400 Bad Request"
             except Exception:

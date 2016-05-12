@@ -1,5 +1,6 @@
 import logging
 
+from htmlparser import parse_and_find
 from htmlparser.finder import Finder
 from htmlparser.parser import Parser
 from server.customhttp import NotJsonError
@@ -46,26 +47,16 @@ def _get_validated_args(params):
         raise InvalidArguments
 
 
-def _parse_and_find(file_content, attributes):
-    parser = Parser()
-    element_list = parser.parse(file_content)
-    finder = Finder(element_list)
-    if attributes is not None:
-        return finder.find_attributes_from_list(attributes)
-    else:
-        return finder.find_first_page_attributes()
-
-
 def _process_file_and_eventually_parse(sha256, attributes):
     with Fileservice.File(sha256) as file:
         file_content = file.read()
         if file_content == "PROCESSING":
             status = "202 Accepted"
             body = {"message": "Your request is being processed, please wait some time"}
-        elif file_content == "NOT_FOUND":
+        elif file_content == "NOT FOUND":
             status = "404 Not Found"
             body = {"message": "VirusTotal doesn't have information about your file"}
         else:
             status = "200 OK"
-            body = _parse_and_find(file_content, attributes)
+            body = parse_and_find(file_content, attributes)
     return status, body
