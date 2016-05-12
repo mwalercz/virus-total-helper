@@ -20,9 +20,9 @@ def request_to_vt(sha256):
         logging.error("No internet connection! Couldn't connect with virustotal.com")
         return
     data = responsevt.text
-    found = is_not_found_on_vt(data)
+    not_found = is_not_found_on_vt(data)
 
-    if not found:
+    if not_found:
         with Fileservice.File(sha256) as file:
             if file.read() == "PROCESSING":
                 file.write("NOT FOUND")

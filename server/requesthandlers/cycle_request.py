@@ -1,14 +1,10 @@
 # @author: Marek
 # cykliczne zapytanie do VT
 
-# TODO: sprawdzic, czy conr ma odpowiedni format
-# TODO: sprawdzic czy mamy juz takie SHA w bazie
-
 import logging
-from traceback import print_exc
 
+from server.customhttp import NotJsonError
 from server.requesthandlers import vt_request
-from apscheduler.events import SchedulerEvent
 
 
 def cycle_handler(request, response, scheduler):
@@ -37,6 +33,8 @@ def cycle_handler(request, response, scheduler):
             "error": "Wrong parameters. Check corn or sha256"
         }
         return response
+
+
 
     # tworzymy response
     response.status = "202 Accepted"

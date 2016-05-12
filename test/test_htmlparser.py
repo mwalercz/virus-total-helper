@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from fileservice import Fileservice
+from server.fileservice import Fileservice
 from htmlparser import is_not_found_on_vt
 
 
