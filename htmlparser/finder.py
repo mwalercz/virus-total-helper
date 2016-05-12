@@ -46,7 +46,6 @@ class Finder:
         antyviruses_found = self._find_green_antyviruses_info(antyviruses_found)
         return antyviruses_found
 
-
     def _find_green_antyviruses_info(self, antyviruses_found):
         for index in self._next_antyvirus({'class': 'ltr text-green'}):
             antyvirus = {self.element_list[index - 2].content: {
@@ -65,10 +64,13 @@ class Finder:
             antyviruses_found.update(antyvirus)
         return antyviruses_found
 
-
     def _next_antyvirus(self, attributes):
         antyvirusTag = Tag(tagname='td', attributes=attributes)
         for i, element in enumerate(self.element_list):
             if antyvirusTag == element:
                 yield i
         return None
+
+    def is_content_present(self, string_searched):
+        content_found = [content for content in self.content_list if string_searched in content.content]
+        return len(content_found) > 0
