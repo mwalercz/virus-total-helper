@@ -9,25 +9,31 @@ from server.customhttp import HTTPResponse
 
 
 def cycle_handler(request, response, scheduler):
-
     if not is_json(request, response):
         return response
 
     data = request.json()
-    sha256 = data.get('sha256')
-    cron = data.get('cron')
 
-    if not corect_cron(cron, response):
+    try:
+        sha256, cron = _get_validated_args(data)
+    except InvalidArguments:
+        logging.info("Given arguments are invalid")
+        response.status = "406 Not Acceptable"
+        response.body = {
+            "error": "Wrong parameters. Check cron or sha256"
+        }
         return response
 
     if not (try_add_job(sha256, cron, scheduler, response)):
+        return response
+
+    if not corect_cron(cron, response):
         return response
 
     try:
         scheduler.remove_job(job_id=sha256)
     except Exception:
         pass
-
 
     scheduler.add_job(func=lambda: vt_request.request_to_vt(sha256),
                       trigger='cron', id='control_job',
@@ -44,6 +50,17 @@ def cycle_handler(request, response, scheduler):
     return response
 
 
+class InvalidArguments(Exception):
+    pass
+
+
+def _get_validated_args(params):
+    if len(params) == 2 and "sha256" in params and "cron" in params and isinstance(params["cron"], dict):
+        return params["sha256"], params["cron"]
+    else:
+        raise InvalidArguments
+
+
 def is_json(request, response):
     try:
         data = request.json()
@@ -56,6 +73,7 @@ def is_json(request, response):
         return False
     return True
 
+
 # badamy jedynie czy ponade wartosci mieszcza sie w przedzialach
 def try_add_job(sha256, cron, scheduler, response):
     try:
@@ -66,7 +84,7 @@ def try_add_job(sha256, cron, scheduler, response):
         logging.error("Scheduler reject job")
         response.status = "406 Not Acceptable"
         response.body = {
-            "error": "Wrong parameters. Check corn or sha256"
+            "error": "Wrong parameters. Check cron or sha256"
         }
         return False
     return True
@@ -123,6 +141,6 @@ def corect_cron(cron, response):
 
 
 def wrong_cron_response(response):
-    logging.error("Wrong corn")
+    logging.error("Wrong cron")
     response.status = "400 Invalid time parameters"
     return response

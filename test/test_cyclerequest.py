@@ -16,6 +16,20 @@ class TestCycleRequest(TestCase):
         cls.app.exit_gracefully()
 
 
+    def test_volidation(self):
+        payload = {
+            "sha256": "przykladowe_sha356",
+            "cron": {
+                "day": "1",
+                "minute": "20"
+            }
+        }
+        response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
+                                 data=json.dumps(payload)
+                                 )
+        self.assertNotEqual(406, response.status_code)
+
+
     def test_status(self):
         # to jest ważne, nasz serwer po content-type rozroznia co jest binary a co json
         payload = {
