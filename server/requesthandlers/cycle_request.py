@@ -26,9 +26,6 @@ def cycle_handler(request, response, scheduler):
     if not (try_add_job(sha256, cron, scheduler, response)):
         return response
 
-    if not corect_cron(cron, response):
-        return response
-
     try:
         scheduler.remove_job(job_id=sha256)
     except Exception:
@@ -88,7 +85,7 @@ def try_add_job(sha256, cron, scheduler, response):
         return False
     return True
 
-
+# DEPRECATED. DO NOT USE
 def corect_cron(cron, response):
     year = cron.get('year')
     month = cron.get('month')

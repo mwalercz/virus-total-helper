@@ -102,22 +102,6 @@ class TestApplication(TestCase):
 
         self.assertEqual(415, response.status_code)
 
-    def test_wrong_cron_minute(self):
-        payload = {
-            "sha256": "przykladowe_sha356",
-            "cron": {
-                "day": "1",
-                "minute": "66"
-            }
-        }
-        response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
-                                 data=json.dumps(payload)
-                                 )
-        json_content = response.json()
-        message = json_content.get("error")
-        self.assertEqual(400, response.status_code)
-        self.assertEqual("Wrong minute parameter", message)
-
     # /cycle request test
 
     # single request test
