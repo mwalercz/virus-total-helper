@@ -1,8 +1,6 @@
 import logging
 
 from htmlparser import parse_and_find
-from htmlparser.finder import Finder
-from htmlparser.parser import Parser
 from server.customhttp import NotJsonError
 from server.fileservice import NoSuchFile, Fileservice
 

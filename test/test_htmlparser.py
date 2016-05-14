@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from server.fileservice import Fileservice
+from server.fileservice import Fileservice, NoSuchFile
 from htmlparser import is_not_found_on_vt
 
 
@@ -10,6 +10,7 @@ class TestHtmlParser(TestCase):
             file_content = file.read()
 
         bool = is_not_found_on_vt(file_content)
+        print(bool)
         self.assertTrue(bool)
 
     def test_is_found_on_vt(self):
@@ -17,4 +18,5 @@ class TestHtmlParser(TestCase):
             file_content = file.read()
 
         bool = is_not_found_on_vt(file_content)
+        print(bool)
         self.assertFalse(bool)

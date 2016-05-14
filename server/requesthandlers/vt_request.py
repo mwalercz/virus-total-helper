@@ -23,11 +23,14 @@ def request_to_vt(sha256):
     not_found = is_not_found_on_vt(data)
 
     if not_found:
-        with Fileservice.File(sha256) as file:
-            if file.read() == "PROCESSING":
-                file.write("NOT FOUND")
-        logging.info("File " + sha256 + ".html is empty")
+        not_found(sha256)
     else:
         with Fileservice.File(sha256) as file:
             file.write(data)
             logging.info("File: " + sha256 + ".html updated")
+
+def not_found(sha256):
+    with Fileservice.File(sha256) as file:
+        if file.read() == "PROCESSING":
+            file.write("NOT FOUND")
+    logging.info("File " + sha256 + ".html is empty")
