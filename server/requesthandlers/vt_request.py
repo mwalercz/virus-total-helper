@@ -1,5 +1,5 @@
 # author: Marek
-#biblioteka BeautifulSoup sluzy do przegladania pliku .html i wyszukiwania w nim odpowiedniego naglowka
+# biblioteka BeautifulSoup sluzy do przegladania pliku .html i wyszukiwania w nim odpowiedniego naglowka
 import logging
 
 import requests
@@ -28,6 +28,7 @@ def request_to_vt(sha256):
         with Fileservice.File(sha256) as file:
             file.write(data)
             logging.info("File: " + sha256 + ".html updated")
+
 
 def not_found(sha256):
     with Fileservice.File(sha256) as file:

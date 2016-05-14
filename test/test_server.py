@@ -11,15 +11,15 @@ from server.fileservice import Fileservice
 from server.requesthandlers.single_request import create_processingg_file
 
 
-class TestApplication(TestCase):
+class TestServer(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.app = Server()
-        cls.app.serve()
+        cls.server = Server()
+        cls.server.serve()
 
     @classmethod
     def tearDownClass(cls):
-        cls.app.exit_gracefully()
+        cls.server.exit_gracefully()
 
     # simple requests test
     def test_scheduler_request(self):
