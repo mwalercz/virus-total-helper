@@ -11,7 +11,7 @@ from server.fileservice import Fileservice
 from server.requesthandlers.single_request import create_processingg_file
 
 
-class TestServer(TestCase):
+class TestApplication(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = Server()
