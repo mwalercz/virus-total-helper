@@ -5,7 +5,6 @@ import logging
 
 from server.customhttp import NotJsonError
 from server.requesthandlers import vt_request
-from server.customhttp import HTTPResponse
 
 
 def cycle_handler(request, response, scheduler):
