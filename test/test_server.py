@@ -138,7 +138,7 @@ class TestApplication(TestCase):
         expectedSha = expectedShaObcjet.hexdigest()
         self.assertEqual(responseSha256, expectedSha)
 
-    def test_processing_fiel(self):
+    def test_processing_file(self):
         create_processingg_file("processing")
         with Fileservice.File("processing") as file:
             file_content = file.read()
@@ -197,15 +197,11 @@ class TestApplication(TestCase):
 
     # VT request test
     def test_not_found(self):
-        payload = b'nieznany_plik'
-        response = requests.post('http://localhost:5005/api/singleVirusTotal',
-                                 data=payload)
-        data = response.json()
-        sha256 = data.get('sha256')
+        sha256 = 'test_not_found'
         with Fileservice.File(sha256) as file:
             file_content = file.read()
             self.assertEqual(file_content, "PROCESSING")
-            file.remove()
+            file.write("PROCESSING")
 
     # /VT request test
 
