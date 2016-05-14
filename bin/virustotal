@@ -4,7 +4,7 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from server import App
+from server import Server
 
-app = App()
-app.initialize()
+app = Server()
+app.serve()

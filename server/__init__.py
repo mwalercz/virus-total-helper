@@ -11,8 +11,8 @@ from .dispatcher import Dispatcher
 from .receptionist import Receptionist
 
 
-class App:
-    def initialize(self):
+class Server:
+    def serve(self):
         self._initialize_config()
         self._initialize_logs()
         self._initialize_objects()
