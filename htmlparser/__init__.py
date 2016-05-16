@@ -12,7 +12,7 @@ def init_parser_and_finder(file_content):
 def is_not_found_on_vt(file_content):
     not_found = "File not found"
     finder = init_parser_and_finder(file_content)
-    return finder.is_content_present(not_found)
+    return finder.is_content_present(not_found, "Page not found")
 
 
 def parse_and_find(file_content, attributes):
