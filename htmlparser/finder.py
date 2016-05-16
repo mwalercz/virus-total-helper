@@ -71,6 +71,6 @@ class Finder:
                 yield i
         return None
 
-    def is_content_present(self, string_searched):
-        content_found = [content for content in self.content_list if string_searched in content.content]
+    def is_content_present(self, string_searched_one, string_searched_two):
+        content_found = [content for content in self.content_list if string_searched_one in content.content or string_searched_two in content.content]
         return len(content_found) > 0

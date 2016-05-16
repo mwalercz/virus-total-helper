@@ -239,3 +239,4 @@ class TestApplication(TestCase):
         self.assertFalse(bool)
 
     # /Htmlparser test
+
