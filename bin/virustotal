@@ -6,5 +6,5 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from server import Server
 
-app = Server()
-app.serve()
+server = Server()
+server.try_serve()
