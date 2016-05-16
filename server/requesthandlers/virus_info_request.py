@@ -1,6 +1,6 @@
 import logging
 
-from htmlparser import parse_and_find
+from htmlparser import parse_and_find, is_not_found_on_vt
 from server.customhttp import NotJsonError
 from server.fileservice import NoSuchFile, Fileservice
 
@@ -52,6 +52,9 @@ def _process_file_and_eventually_parse(sha256, attributes):
             status = "202 Accepted"
             body = {"message": "Your request is being processed, please wait some time"}
         elif file_content == "NOT FOUND":
+            status = "404 Not Found"
+            body = {"message": "VirusTotal doesn't have information about your file"}
+        elif is_not_found_on_vt(file_content):
             status = "404 Not Found"
             body = {"message": "VirusTotal doesn't have information about your file"}
         else:
