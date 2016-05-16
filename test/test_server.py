@@ -15,7 +15,7 @@ class TestApplication(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = Server()
-        cls.server.serve()
+        cls.server.try_serve()
 
     @classmethod
     def tearDownClass(cls):
