@@ -4,64 +4,37 @@ Jak odpalić projekt
 -------------------
 1. ściagamy pythona 3.4, dla ubuntu: 
     * sudo apt-get install python3.4
-2. (opcjonalny) ściagamy virtualenv i virtualenvwrapper:
-    * pip install virtualenv
-    * pip install virtualenvwrapper
+2. (opcjonalny) ściagamy virtualenv i virtualenvwrapper i tworzymy wirtualne środowiska dla pythona:
+    * sudo pip install virtualenv
+    * sudo pip install virtualenvwrapper
     * export WORKON_HOME=~/Envs
     * mkdir -p $WORKON_HOME
     * source /usr/local/bin/virtualenvwrapper.sh
-    * mkvirtualenv tin
+    * mkvirtualenv tin --python=python3.4
     * żeby odpalic wirtualne srodowisko o nazwie tin:
         * workon tin
   
 3. ściągamy gita, dla ubuntu: 
     * sudo apt-get install git
-4. (opcjonalny) ściagamy gui do gita np smartgit: http://www.syntevo.com/smartgit/download
-w środku jest smartgit.sh ktory sluzy do odpalania aplikacji
-5. ściagamy projekt
+4. ściagamy projekt
     * tworzymy nowy folder, w ktorym bedzie projekt:
         * mkdir tin
         * cd tin
-    * klonujemy repo:
-        * git clone https://github.com/mwalercz/virus-total-helper
-6. instalujemy biblioteki pythona3.4, ktore bedą nam potrzebne (jesli nie uzywasz virtualenvwrappera to trzeba dac sudo, 
-jesli uzywasz wrappera to upewnij sie ze pracujesz na srodowisku wirtualnym: workon tin)
+    * klonujemy repozytorium z brancha release:
+        * git clone -b release https://github.com/mwalercz/virus-total-helper
+5. instalujemy biblioteki pythona3.4, ktore bedą nam potrzebne (jesli nie uzywamy virtualenvwrappera to trzeba dac sudo, 
+jesli uzywamy wrappera to należy upewnić się że jesteśmy na srodowisku wirtualnym (w konsoli z lewej strony powinien widnieć napis (tin) - jeśli nie, wpisujemy: workon tin))
     * cd virus-total-helper
-    * [sudo] pip install -r requirements
-7. żeby sprawdzic czy dziala:
-   * z virtualenvwrapperem:
-       * python -m unittest
-   * bez virtualenvwrappera:
-       * python3.4 -m unittest       
-   * Powinno powiedziec nam ze co najmniej jeden test zostal odpalony
-8. żeby odpalić aplikacje:
- * python/python3.4 app
- * Odpala nam to co jest w app.__main__.py
- 
-Praca nad projektem
--------------------
-Bedąc w glownym folderze projektu
-1. pullujemy z gita nowości:
-    * git pull
-2. uruchamiamy testy jw - jak cos nie dziala to sprawdzamy kto ostatnio commitowac i kazemy mu poprawic
-3. dla kazdej nowej klasy tworzymy folder w app
-4. kodzimy wg oficjalnego stylu pythona https://www.python.org/dev/peps/pep-0008/
-5. dla kazdej stworzonej przez nas klasy piszemy testy!!! 
-6. uruchamiamy wszystkie testy (wyjasnione ponizej)
-7. nie pushujemy jesli cos nie działa!!!
-8. jesli wsjo dziala to robimy commit i push
-    
-Jak pisać i uruchamiać testy
-----------------------------
-Testy piszemy w katalogu test, korzystamy z podstawowej biblioteki pythona unittest. Dla kazdego modulu tworzymy nowy plik.
-Wszystkie nazwy plików testowych musza zaczynac sie na "test", np "test_default.py".
-Jesli w app stworzymy modul o nazwie "scheduler.py" to w test tworzymy plik o nazwie "test_scheduler.py".
-Zeby odpalić wszystkie testy musimy byc w glownym folderze (virus-total-helper):
-* python -m unittest
-    lub
-* nose2
-    
-Mozna sobie to wszystko ustawic w pycharmie w edit configurations: python test
+    * [sudo] pip3.4 install -r requirements.txt
+6. żeby odpalić serwer wywołujemy:
+    * ./bin/virustotal
+    * możliwe, że trzeba plikowi virustotal nadać uprawnienia do wykonywania, w takim wypadku
+    * chmod +x bin/virustotal
+7. domyślnie serwer jest widoczny pod localhost:5005
+8. w pliku config.ini możemy zmienić nazwę hosta, port, miejsce przechowywania logów oraz miejsce do którego będą zapisywane pliki html.
+9. po zmianie pliku config należy wyłączyć i ponownie włączyć aplikacje -> aplikacja reaguje na SIGINT (ctrl+c)
+
+
 
     
  
