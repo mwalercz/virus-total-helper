@@ -20,8 +20,8 @@ Jak odpalić projekt
     * tworzymy nowy folder, w ktorym bedzie projekt:
         * mkdir tin
         * cd tin
-    * klonujemy repozytorium z brancha release:
-        * git clone -b release https://github.com/mwalercz/virus-total-helper
+    * klonujemy repozytorium
+        * git clone https://github.com/mwalercz/virus-total-helper
 5. instalujemy biblioteki pythona3.4, ktore bedą nam potrzebne (jesli nie uzywamy virtualenvwrappera to trzeba dac sudo, 
 jesli uzywamy wrappera to należy upewnić się że jesteśmy na srodowisku wirtualnym (w konsoli z lewej strony powinien widnieć napis (tin) - jeśli nie, wpisujemy: workon tin))
     * cd virus-total-helper

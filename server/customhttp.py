@@ -25,6 +25,13 @@ class HTTPRequest:
         except Exception:
             raise NotJsonError
 
+    def is_json(self):
+        try:
+            json.loads(self.body.decode("utf-8"))
+        except Exception:
+            return False
+        return True
+
     def binary(self):
         return self.body
 
