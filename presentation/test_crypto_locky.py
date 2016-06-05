@@ -2,6 +2,8 @@
 import requests
 import json
 import time
+
+# żeby zadziałało najpierw należy uruchomić serwer na porcie 5005
 def test_plenty_sha256(filename):
     sha256_list = get_sha256_list(filename)
     for sha256 in sha256_list:
@@ -29,5 +31,5 @@ def get_sha256_list(filename):
             sha256_list.append(sha256)
     return sha256_list
 
-test_plenty_sha256("locky.txt")
 test_plenty_sha256("crypto.txt")
+test_plenty_sha256("locky.txt")
