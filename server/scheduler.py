@@ -9,8 +9,8 @@ class Scheduler:
             'default': SQLAlchemyJobStore(url='sqlite:///jobs.sqlite')
         }
         executors = {
-            'default': {'type': 'threadpool', 'max_workers': 20},
-            'processpool': ProcessPoolExecutor(max_workers=5)
+            'default': {'type': 'threadpool', 'max_workers': 50},
+            'processpool': ProcessPoolExecutor(max_workers=20)
         }
         job_defaults = {
             'coalesce': False,

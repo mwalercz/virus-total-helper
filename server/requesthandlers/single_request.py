@@ -30,7 +30,7 @@ def single_handler(request, response, scheduler):
         "message": "Task has been accepted, please ask us again about that file in some time using method /api/virus"
     }
     # pojedyncze zapytanie do VT
-    scheduler.add_job(lambda: vt_request.request_to_vt(sha256))
+    scheduler.add_job(lambda: vt_request.request_to_vt(sha256), misfire_grace_time=60, max_instances=250)
     return response
 
 def create_processing_file(sha256):

@@ -129,6 +129,7 @@ class TestApplication(TestCase):
             self.assertEqual(file_content, "PROCESSING")
             file.write("It shouldn't exist")
             file.remove()
+
     # /single request test
 
     #  virus_info request test
@@ -239,4 +240,3 @@ class TestApplication(TestCase):
         self.assertFalse(bool)
 
     # /Htmlparser test
-
