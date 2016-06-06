@@ -1,5 +1,4 @@
 import collections
-import logging
 
 from .parser import Content, Tag
 
@@ -31,18 +30,15 @@ class Finder:
 
     # w przypadku prostych atrybutów zawsze szukamy następnego elementu typu Content
     def _find_simple_attribute(self, element_to_find):
-        elements_found = []
+        j = -1
         for i, content in enumerate(self.content_list):
             if element_to_find in content.content:
-                elements_found.append(self.content_list[i+1].content)
-        if len(elements_found) == 0:
+                j = i + 1
+                break
+        if j == -1:
             return {element_to_find: "Element not found"}
-        elif len(elements_found) == 1:
-            return {element_to_find: elements_found[0]}
         else:
-            logging.info("Found more than one element for " + element_to_find + ", which are " +
-                         str(elements_found) + ". Arbitrally picked second element: " + elements_found[1])
-            return {element_to_find: elements_found[1]}
+            return {element_to_find: self.content_list[j].content}
 
     def _find_antyviruses_info(self):
         antyviruses_found = {}
@@ -76,6 +72,5 @@ class Finder:
         return None
 
     def is_content_present(self, string_searched_one, string_searched_two):
-        content_found = [content for content in self.content_list if
-                         string_searched_one in content.content or string_searched_two in content.content]
+        content_found = [content for content in self.content_list if string_searched_one in content.content or string_searched_two in content.content]
         return len(content_found) > 0

@@ -11,14 +11,8 @@ from .dispatcher import Dispatcher
 from .receptionist import Receptionist
 
 
-class Server:
-    def try_serve(self):
-        try:
-            self.serve()
-        except OSError as error:
-            logging.error("Probably port is already in use, please change port in config.ini. " + str(error))
-
-    def serve(self):
+class App:
+    def initialize(self):
         self._initialize_config()
         self._initialize_logs()
         self._initialize_objects()
@@ -46,6 +40,7 @@ class Server:
         config.connection_no = int(cfg['connection']['Number'])
         config.html_dir = cfg['paths']['Html']
         config.log_filename = cfg['paths']['Logs']
+        config.absolute_path = cfg['paths']['Absolute']
 
     def _initialize_objects(self):
         self.scheduler = Scheduler()

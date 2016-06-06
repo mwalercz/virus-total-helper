@@ -8,14 +8,14 @@ import requests
 from unittest import TestCase
 from server import Server
 from server.fileservice import Fileservice
-from server.requesthandlers.single_request import create_processing_file
+from server.requesthandlers.single_request import create_processingg_file
 
 
 class TestApplication(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = Server()
-        cls.server.try_serve()
+        cls.server.serve()
 
     @classmethod
     def tearDownClass(cls):
@@ -123,13 +123,12 @@ class TestApplication(TestCase):
         self.assertEqual(responseSha256, expectedSha)
 
     def test_processing_file(self):
-        create_processing_file("processing")
+        create_processingg_file("processing")
         with Fileservice.File("processing") as file:
             file_content = file.read()
             self.assertEqual(file_content, "PROCESSING")
             file.write("It shouldn't exist")
             file.remove()
-
     # /single request test
 
     #  virus_info request test
@@ -240,3 +239,4 @@ class TestApplication(TestCase):
         self.assertFalse(bool)
 
     # /Htmlparser test
+
