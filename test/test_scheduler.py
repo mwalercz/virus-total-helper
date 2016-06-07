@@ -1,14 +1,15 @@
+import logging
 from unittest import TestCase
 
 from server.scheduler import Scheduler
 
 
 def simple_function():
-    print(5)
+    logging.info("Result simple_function = " + str(5))
 
 
 def fun_with_args(x):
-    print(x)
+    logging.info("Result fun_with_args = " + str(x))
 
 
 class TestScheduler(TestCase):

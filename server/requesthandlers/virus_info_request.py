@@ -1,6 +1,6 @@
 import logging
 
-from htmlparser import parse_and_find
+from htmlparser import parse_and_find, is_not_found_on_vt
 from server.customhttp import NotJsonError
 from server.fileservice import NoSuchFile, Fileservice
 
@@ -19,7 +19,8 @@ def virus_info_handler(request, response):
         logging.info("Given arguments are invalid")
         response.status = "400 Bad Request"
         response.body = {
-            "error": "Given arguments are invalid. Please provide sha256: string and attributes: [] arguments"
+            "error": "Given arguments are invalid. Please provide sha256: "
+                     "string and optionally attributes: array[] of strings"
         }
         return response
     try:
@@ -49,9 +50,12 @@ def _process_file_and_eventually_parse(sha256, attributes):
     with Fileservice.File(sha256) as file:
         file_content = file.read()
         if file_content == "PROCESSING":
-            status = "202 Accepted"
-            body = {"message": "Your request is being processed, please wait some time"}
+            status = "302 Found"
+            body = {"message": "Requested virus information is not ready yet, please try again later."}
         elif file_content == "NOT FOUND":
+            status = "404 Not Found"
+            body = {"message": "VirusTotal doesn't have information about your file"}
+        elif is_not_found_on_vt(file_content):
             status = "404 Not Found"
             body = {"message": "VirusTotal doesn't have information about your file"}
         else:

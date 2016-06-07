@@ -8,14 +8,14 @@ import requests
 from unittest import TestCase
 from server import Server
 from server.fileservice import Fileservice
-from server.requesthandlers.single_request import create_processingg_file
+from server.requesthandlers.single_request import create_processing_file
 
 
 class TestApplication(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = Server()
-        cls.server.serve()
+        cls.server.try_serve()
 
     @classmethod
     def tearDownClass(cls):
@@ -102,22 +102,6 @@ class TestApplication(TestCase):
 
         self.assertEqual(415, response.status_code)
 
-    def test_wrong_cron_minute(self):
-        payload = {
-            "sha256": "przykladowe_sha356",
-            "cron": {
-                "day": "1",
-                "minute": "66"
-            }
-        }
-        response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
-                                 data=json.dumps(payload)
-                                 )
-        json_content = response.json()
-        message = json_content.get("error")
-        self.assertEqual(400, response.status_code)
-        self.assertEqual("Wrong minute parameter", message)
-
     # /cycle request test
 
     # single request test
@@ -139,12 +123,13 @@ class TestApplication(TestCase):
         self.assertEqual(responseSha256, expectedSha)
 
     def test_processing_fiel(self):
-        create_processingg_file("processing")
+        create_processing_file("processing")
         with Fileservice.File("processing") as file:
             file_content = file.read()
             self.assertEqual(file_content, "PROCESSING")
             file.write("It shouldn't exist")
             file.remove()
+
     # /single request test
 
     #  virus_info request test
