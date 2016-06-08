@@ -9,7 +9,7 @@ from unittest import TestCase
 from server import Server
 from server.fileservice import Fileservice
 from server.requesthandlers.single_request import create_processing_file
-from server.queue import Queuerequest
+from server.queuerequest import Queuerequest
 
 class TestApplication(TestCase):
     @classmethod

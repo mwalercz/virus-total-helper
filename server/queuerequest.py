@@ -1,8 +1,8 @@
 import queue
 import logging
 
-class Queuerequest:
 
+class Queuerequest:
     queue_request = queue.Queue()
 
     @staticmethod

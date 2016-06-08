@@ -1,7 +1,7 @@
 from apscheduler.executors.pool import ProcessPoolExecutor
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
-from server.queue import Queuerequest
+from server.queuerequest import Queuerequest
 from server.requesthandlers import vt_request
 import queue
 import logging

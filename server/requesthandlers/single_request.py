@@ -6,7 +6,7 @@ import logging
 
 from server.requesthandlers import vt_request
 from server.fileservice import Fileservice
-from server.queue import Queuerequest
+from server.queuerequest import Queuerequest
 
 def single_handler(request, response, scheduler):
 
