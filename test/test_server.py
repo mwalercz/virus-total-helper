@@ -9,7 +9,7 @@ from unittest import TestCase
 from server import Server
 from server.fileservice import Fileservice
 from server.requesthandlers.single_request import create_processing_file
-
+from server.queue import Queuerequest
 
 class TestApplication(TestCase):
     @classmethod
@@ -244,3 +244,17 @@ class TestApplication(TestCase):
         self.assertFalse(bool)
 
     # /Htmlparser test
+
+    # queue test
+
+    def queue_push_test(self):
+        Queuerequest.push("sha256")
+        self.assertEqual(Queuerequest.queue_request.qsize(), 1)
+
+    def queue_pop_test(self):
+        Queuerequest.push("sha256")
+        sha256 = Queuerequest.pop()
+        self.assertEqual(Queuerequest.queue_request.qsize(), 0)
+        self.assertEqual(sha256, 'sha256')
+
+    # /queue test

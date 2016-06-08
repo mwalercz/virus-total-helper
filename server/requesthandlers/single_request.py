@@ -6,10 +6,7 @@ import logging
 
 from server.requesthandlers import vt_request
 from server.fileservice import Fileservice
-
-
-
-
+from server.queue import Queuerequest
 
 def single_handler(request, response, scheduler):
 
@@ -30,7 +27,8 @@ def single_handler(request, response, scheduler):
         "message": "Task has been accepted, please ask us again about that file in some time using method /api/virus"
     }
     # pojedyncze zapytanie do VT
-    scheduler.add_job(lambda: vt_request.request_to_vt(sha256), misfire_grace_time=60, max_instances=250)
+    #scheduler.add_job(lambda: vt_request.request_to_vt(sha256), misfire_grace_time=60, max_instances=250)
+    Queuerequest.push(sha256)
     return response
 
 def create_processing_file(sha256):
