@@ -9,7 +9,7 @@ def request_handler(request, response):
     return response
 
 
-def request_scheduler_handler(request, response, scheduler):
+def request_scheduler_handler(request, response):
     response.body = {"request_scheduler_handler": str(request)}
     return response
 
@@ -22,7 +22,8 @@ class TestDispatcherAndResponse(TestCase):
     def setUp(self):
         self.urls = URLS
         self.scheduler = 'scheduler'
-        self.dispatcher = Dispatcher(self.urls, self.scheduler)
+        self.queue = "queue"
+        self.dispatcher = Dispatcher(self.urls, self.scheduler, self.queue)
 
     def test_request(self):
         response = self.dispatcher.dispatch(RequestMock('GET', '/request'))

@@ -15,9 +15,9 @@ def fun_with_args(x):
 class TestScheduler(TestCase):
     @classmethod
     def setUpClass(cls):
-        scheduler = Scheduler()
+        scheduler = Scheduler().apscheduler
         scheduler.start()
-        cls.scheduler = scheduler.apscheduler
+        cls.scheduler = scheduler
 
     def test_simple_function(self):
         self.scheduler.add_job(simple_function)

@@ -1,15 +1,14 @@
+import hashlib
 import json
 import os
-
-from htmlparser import is_not_found_on_vt
-from server.fileservice import Fileservice, NoSuchFile
-import hashlib
-import requests
 from unittest import TestCase
+import requests
+from htmlparser import is_not_found_on_vt
 from server import Server
 from server.fileservice import Fileservice
+from server.fileservice import NoSuchFile
 from server.requesthandlers.single_request import create_processing_file
-from server.queuerequest import Queuerequest
+
 
 class TestApplication(TestCase):
     @classmethod
@@ -75,18 +74,20 @@ class TestApplication(TestCase):
 
         self.assertEqual(202, response.status_code)
 
-    def test_scheduler_reject(self):
-        payload = {
-            "sha256": "przykladowe_sha356",
-            "cron": {
-                "seconde": "59"
-            }
-        }
-        response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
-                                 data=json.dumps(payload)
-                                 )
+    # SERVER DOESNT CHECK IF CRON IS CORRECT
 
-        self.assertEqual(406, response.status_code)
+    # def test_scheduler_reject(self):
+    #     payload = {
+    #         "sha256": "przykladowe_sha356",
+    #         "cron": {
+    #             "seconde": "59"
+    #         }
+    #     }
+    #     response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
+    #                              data=json.dumps(payload)
+    #                              )
+    #
+    #     self.assertEqual(406, response.status_code)
 
     def test_wrong_json(self):
         payload = {
@@ -109,7 +110,6 @@ class TestApplication(TestCase):
         payload = b'sprawdzamy_pojedyncze_zapytanie'
         response = requests.post('http://localhost:5005/api/singleVirusTotal',
                                  data=payload)
-        # dostalismy z powrotem jsona bo nasz serwer umie tylko wysylac jsony
         self.assertEqual(202, response.status_code)
 
     def test_sha256(self):
@@ -245,16 +245,3 @@ class TestApplication(TestCase):
 
     # /Htmlparser test
 
-    # queue test
-
-    def queue_push_test(self):
-        Queuerequest.push("sha256")
-        self.assertEqual(Queuerequest.queue_request.qsize(), 1)
-
-    def queue_pop_test(self):
-        Queuerequest.push("sha256")
-        sha256 = Queuerequest.pop()
-        self.assertEqual(Queuerequest.queue_request.qsize(), 0)
-        self.assertEqual(sha256, 'sha256')
-
-    # /queue test

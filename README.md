@@ -2,18 +2,8 @@
 
 Jak odpalić projekt
 -------------------
-1. ściagamy pythona 3.4, dla ubuntu: 
-    * sudo apt-get install python3.4
-2. (opcjonalny) ściagamy virtualenv i virtualenvwrapper i tworzymy wirtualne środowiska dla pythona:
-    * sudo pip install virtualenv
-    * sudo pip install virtualenvwrapper
-    * export WORKON_HOME=~/Envs
-    * mkdir -p $WORKON_HOME
-    * source /usr/local/bin/virtualenvwrapper.sh
-    * mkvirtualenv tin --python=python3.4
-    * żeby odpalic wirtualne srodowisko o nazwie tin:
-        * workon tin
-  
+1. ściagamy pythona 3 dla ubuntu: 
+    * sudo apt-get install python3
 3. ściągamy gita, dla ubuntu: 
     * sudo apt-get install git
 4. ściagamy projekt
@@ -22,17 +12,30 @@ Jak odpalić projekt
         * cd tin
     * klonujemy repozytorium
         * git clone https://github.com/mwalercz/virus-total-helper
-5. instalujemy biblioteki pythona3.4, ktore bedą nam potrzebne (jesli nie uzywamy virtualenvwrappera to trzeba dac sudo, 
+5. instalujemy biblioteki pythona3, ktore bedą nam potrzebne (jesli nie uzywamy virtualenvwrappera to trzeba dac sudo, 
 jesli uzywamy wrappera to należy upewnić się że jesteśmy na srodowisku wirtualnym (w konsoli z lewej strony powinien widnieć napis (tin) - jeśli nie, wpisujemy: workon tin))
     * cd virus-total-helper
-    * [sudo] pip3.4 install -r requirements.txt
-6. żeby odpalić serwer wywołujemy:
-    * ./bin/virustotal
+    * [sudo] pip3 install -r requirements.txt
+6. żeby odpalić serwer wchodzimy do katalogu bin (uwaga, istotne jest żeby zrobić to z katologu bin, inaczej nie będzie działać):
+    * ./virustotal
     * możliwe, że trzeba plikowi virustotal nadać uprawnienia do wykonywania, w takim wypadku
     * chmod +x bin/virustotal
 7. domyślnie serwer jest widoczny pod localhost:5005
 8. w pliku config.ini możemy zmienić nazwę hosta, port, miejsce przechowywania logów oraz miejsce do którego będą zapisywane pliki html.
-9. po zmianie pliku config należy wyłączyć i ponownie włączyć aplikacje -> aplikacja reaguje na SIGINT (ctrl+c)
+9. po zmianie pliku config należy wyłączyć i ponownie włączyć aplikacje -> aplikacja reaguje na SIGINT (ctrl+c), i ładnie robi dump kolejki (można podejrzeć w pliku dump w głównym folderze)
+
+Prezentacja
+-----------
+W katalogu presentation są dwa skrypty pythona, w celu wypróbowania ich działania należy najpierw włączyć serwer 
+(i ew. zmienić porty w skryptach, jeśli są inne od domyślnych)
+1. skrypt make_single_vt_request uderza do metody /api/singleVirusTotal serwera jako argument podaje sha256 plików umieszczonych w locky.txt i crypto.txt
+    * w celu włączenia skryptu: ./make_single_vt_request_py
+2. skrypt make_virus_info_request uderza do metody /api/virus i pyta o takie same sha256 jak wyżej, wyniki zapisuje w results (należy stworzyć ten katalog jeśli wyskoczy błąd)
+
+UWAGA
+Należy pamiętać, że w celu uniknięcia uznania nas za bota przez serwis VirusTotal nasz serwer robi 
+co najwyżej jednego requesta na VtDelay sekund (domyślnie 10), można zmienić w config.ini.
+Natomiast pozostałe żądania są kolejkowane.
 
 
 

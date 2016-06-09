@@ -6,9 +6,9 @@ def default_handler(request, response):
     return response
 
 
-def scheduler_handler(request, response, scheduler):
+def scheduler_handler(request, response):
     param = request.json()
-    scheduler.add_job(lambda: scheduler_job(param))
+    request.scheduler.add_job(lambda: scheduler_job(param))
     response.body = param
     return response
 
