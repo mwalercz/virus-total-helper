@@ -1,6 +1,6 @@
 import logging
 
-from htmlparser import parse_and_find, is_not_found_on_vt
+from ..htmlparser import parse_and_find, is_not_found_on_vt
 from server.customhttp import NotJsonError
 from server.fileservice import NoSuchFile, Fileservice
 

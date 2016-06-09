@@ -18,5 +18,4 @@ class Scheduler:
         }
         self.apscheduler = BackgroundScheduler()
 
-    def start(self):
-        self.apscheduler.start()
+

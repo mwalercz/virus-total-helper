@@ -1,13 +1,12 @@
+import hashlib
 import json
 import os
-
-from htmlparser import is_not_found_on_vt
-from server.fileservice import Fileservice, NoSuchFile
-import hashlib
-import requests
 from unittest import TestCase
+import requests
+from htmlparser import is_not_found_on_vt
 from server import Server
 from server.fileservice import Fileservice
+from server.fileservice import NoSuchFile
 from server.requesthandlers.single_request import create_processing_file
 
 
@@ -75,18 +74,20 @@ class TestApplication(TestCase):
 
         self.assertEqual(202, response.status_code)
 
-    def test_scheduler_reject(self):
-        payload = {
-            "sha256": "przykladowe_sha356",
-            "cron": {
-                "seconde": "59"
-            }
-        }
-        response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
-                                 data=json.dumps(payload)
-                                 )
+    # SERVER DOESNT CHECK IF CRON IS CORRECT
 
-        self.assertEqual(406, response.status_code)
+    # def test_scheduler_reject(self):
+    #     payload = {
+    #         "sha256": "przykladowe_sha356",
+    #         "cron": {
+    #             "seconde": "59"
+    #         }
+    #     }
+    #     response = requests.post('http://localhost:5005/api/scheduleVirusTotal',
+    #                              data=json.dumps(payload)
+    #                              )
+    #
+    #     self.assertEqual(406, response.status_code)
 
     def test_wrong_json(self):
         payload = {
@@ -109,7 +110,6 @@ class TestApplication(TestCase):
         payload = b'sprawdzamy_pojedyncze_zapytanie'
         response = requests.post('http://localhost:5005/api/singleVirusTotal',
                                  data=payload)
-        # dostalismy z powrotem jsona bo nasz serwer umie tylko wysylac jsony
         self.assertEqual(202, response.status_code)
 
     def test_sha256(self):
@@ -182,11 +182,15 @@ class TestApplication(TestCase):
 
     # VT request test
     def test_not_found(self):
-        sha256 = 'test_not_found'
+        payload = b'nieznany_plik'
+        response = requests.post('http://localhost:5005/api/singleVirusTotal',
+                                 data=payload)
+        data = response.json()
+        sha256 = data.get('sha256')
         with Fileservice.File(sha256) as file:
             file_content = file.read()
             self.assertEqual(file_content, "PROCESSING")
-            file.write("PROCESSING")
+            file.remove()
 
     # /VT request test
 

@@ -25,6 +25,10 @@ class HTTPRequest:
         except Exception:
             raise NotJsonError
 
+    def is_content_app_json(self):
+        return "Content-Type" in self.headers and "application/json" in self.headers["Content-Type"]
+
+
     def is_json(self):
         try:
             json.loads(self.body.decode("utf-8"))

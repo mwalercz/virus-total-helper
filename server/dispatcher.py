@@ -9,7 +9,8 @@ class NoSuchUrl(Exception):
 
 
 class Dispatcher:
-    def __init__(self, urls, scheduler):
+    def __init__(self, urls, scheduler, deque):
+        self.deque = deque
         self.urls = urls
         self.scheduler = scheduler
 
@@ -27,9 +28,9 @@ class Dispatcher:
     def _execute_handler_function(self, request, fun):
         parameter_number = len(inspect.signature(fun).parameters)
         if parameter_number == 2:
+            request.scheduler = self.scheduler
+            request.deque = self.deque
             return fun(request, HTTPResponse())
-        elif parameter_number == 3:
-            return fun(request, HTTPResponse(), self.scheduler)
         else:
             raise ArgumentLookupError(fun)
 
