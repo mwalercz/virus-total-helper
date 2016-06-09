@@ -3,7 +3,7 @@ import json
 import os
 from unittest import TestCase
 import requests
-from htmlparser import is_not_found_on_vt
+from server.htmlparser import is_not_found_on_vt
 from server import Server
 from server.fileservice import Fileservice
 from server.fileservice import NoSuchFile

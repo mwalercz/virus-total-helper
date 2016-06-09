@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from htmlparser.parser import Tag, Parser, Content
+from server.htmlparser.parser import Tag, Parser, Content
 
 
 class TestParser(TestCase):

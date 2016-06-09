@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from htmlparser.parser import Parser
+from server.htmlparser.parser import Parser
 
-from htmlparser.finder import Finder
+from server.htmlparser.finder import Finder
 
 
 class TestParserFinder(TestCase):

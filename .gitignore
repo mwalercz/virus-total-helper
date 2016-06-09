@@ -7,6 +7,8 @@
 .idea/
 .idea
 
+dump
+
 # Packages
 *.egg
 *.egg-info
