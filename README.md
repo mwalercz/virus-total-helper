@@ -1,9 +1,10 @@
 # virus-total-helper
 
-Jak odpalić projekt
+Jak uruchomić serwer
 -------------------
-1. ściagamy pythona 3 dla ubuntu: 
+1. ściagamy pythona 3 dla ubuntu oraz pip dla pythona3
     * sudo apt-get install python3
+    * sudo apt-get install python3-pip
 3. ściągamy gita, dla ubuntu: 
     * sudo apt-get install git
 4. ściagamy projekt
@@ -22,20 +23,45 @@ jesli uzywamy wrappera to należy upewnić się że jesteśmy na srodowisku wirt
     * chmod +x bin/virustotal
 7. domyślnie serwer jest widoczny pod localhost:5005
 8. w pliku config.ini możemy zmienić nazwę hosta, port, miejsce przechowywania logów oraz miejsce do którego będą zapisywane pliki html.
-9. po zmianie pliku config należy wyłączyć i ponownie włączyć aplikacje -> aplikacja reaguje na SIGINT (ctrl+c), i ładnie robi dump kolejki (można podejrzeć w pliku dump w głównym folderze)
+9. po zmianie pliku config należy wyłączyć i ponownie włączyć aplikacje -> aplikacja reaguje na SIGINT (ctrl+c) i ładnie robi dump kolejki (można podejrzeć w pliku dump w głównym folderze)
+
+UWAGA;
+Jeśli nie chcemy, żeby stare żądania ostały się po ponownym odpaleniu serwera należy usunąć plik dump z głównego katalogu projektu
 
 Prezentacja
 -----------
 W katalogu presentation są dwa skrypty pythona, w celu wypróbowania ich działania należy najpierw włączyć serwer 
 (i ew. zmienić porty w skryptach, jeśli są inne od domyślnych)
-1. skrypt make_single_vt_request uderza do metody /api/singleVirusTotal serwera jako argument podaje sha256 plików umieszczonych w locky.txt i crypto.txt
+1. skrypt make_single_vt_request uderza do metody /api/singleVirusTotal serwera i jako argument podaje sha256 z plików umieszczonych w locky.txt i crypto.txt
     * w celu włączenia skryptu: ./make_single_vt_request_py
 2. skrypt make_virus_info_request uderza do metody /api/virus i pyta o takie same sha256 jak wyżej, wyniki zapisuje w results (należy stworzyć ten katalog jeśli wyskoczy błąd)
 
 UWAGA
 Należy pamiętać, że w celu uniknięcia uznania nas za bota przez serwis VirusTotal nasz serwer robi 
-co najwyżej jednego requesta na VtDelay sekund (domyślnie 10), można zmienić w config.ini.
-Natomiast pozostałe żądania są kolejkowane.
+co najwyżej jednego requesta na [VtDelay] sekund (domyślnie 10), można zmienić w config.ini.
+Natomiast pozostałe żądania są kolejkowane do FIFO.
+
+
+# virustotalparser standalone
+
+1. Należy przeprowadzić instalację jak dla serwera
+2. wchodzimy do katalogu bin i wywołujemy komendę
+    * ./vtparser html_dir
+    
+Przykłady użycia vtparser:
+--------------------------
+./vtparser html_dir json_dir
+
+./vtparser html_dir
+
+gdzie dir to ścieżka bezwzględna lub względna do plików html/json.
+
+np. ./vtparser test/vt.html test/list.json
+
+Więcej informacji o sposobie działania programu otrzymamy wpisując w konsoli
+
+vtparser
+
 
 
 

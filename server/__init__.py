@@ -70,7 +70,7 @@ class Server:
             with open(config.dump_filename) as file:
                 return json.loads(file.read())
         else:
-            return {}
+            return []
 
     def _dump_deque_to_file(self):
         with open(config.dump_filename, 'w+') as file:
@@ -89,11 +89,11 @@ class Server:
 
     def _initialize_default_job(self):
         cron = {"second": "*/" + config.vt_delay}
-        self.scheduler.add_job(func=lambda: self.check_queue_and_make_request_to_vt(),
+        self.scheduler.add_job(func=lambda: self.check_deque_and_make_request_to_vt(),
                                trigger='cron',
                                replace_existing=True, **cron)
 
-    def check_queue_and_make_request_to_vt(self):
+    def check_deque_and_make_request_to_vt(self):
         try:
             sha256 = self.deque.popleft()
             make_request_to_vt(sha256)

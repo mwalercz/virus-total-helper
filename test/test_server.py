@@ -130,6 +130,7 @@ class TestApplication(TestCase):
             file.write("It shouldn't exist")
             file.remove()
 
+
     # /single request test
 
     #  virus_info request test
