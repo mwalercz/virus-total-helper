@@ -12,7 +12,8 @@ def make_single_vt_request(filename):
         response = requests.post('http://localhost:5005/api/singleVirusTotal',
                                  data=json.dumps(payload),
                                  headers=headers)
-        print("status:" + str(response.status_code) + " sha256: " + sha256)
+        returned_json = json.dumps(response.json(), indent=4, sort_keys=True)
+        print("status:" + str(response.status_code) + "\n" + returned_json)
 
 
 def get_sha256_list(filename):
