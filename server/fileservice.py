@@ -60,8 +60,8 @@ class Fileservice:
         file.close()
 
     @staticmethod
-    def _get_filename(sha265):
-        return config.html_dir + str(sha265) + '.html'
+    def _get_filename(sha256):
+        return config.html_dir + sha256 + '.html'
 
     @staticmethod
     def _lock(sha256):
