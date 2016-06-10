@@ -48,14 +48,14 @@ class Fileservice:
     def _read(sha256):
         if not Fileservice._exists(sha256):
             raise NoSuchFile
-        file = open(Fileservice._get_filename(sha256), 'r')
+        file = open(Fileservice._get_filename(sha256), 'r', encoding="UTF-8")
         temp = file.read()
         file.close()
         return temp
 
     @staticmethod
     def _write(sha256, data):
-        file = open(Fileservice._get_filename(sha256), 'w')
+        file = open(Fileservice._get_filename(sha256), 'w', encoding="UTF-8")
         file.write(data)
         file.close()
 
