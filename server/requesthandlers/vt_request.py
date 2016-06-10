@@ -19,6 +19,7 @@ def make_request_to_vt(sha256):
     except Exception:
         logging.error("No internet connection! Couldn't connect with virustotal.com")
         return
+    response.encoding = "UTF-8"
     data = response.text
     if is_not_found_on_vt(data):
         proceed_not_found(sha256)
